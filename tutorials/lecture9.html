@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head><meta http-equiv=Content-Type content='text/html; charset=UTF-8'>
+
+<title>6.830: Lecture 9 (10/08/09)</title>
+<link rel="stylesheet" href="style.css" tppabs="http://db.csail.mit.edu/6.830/style.css" type="text/css" media="screen">
+
+</head>
+<body>
+
+<div style="width: 950px">
+<div class="menubar">
+[
+  <a href="index.htm" tppabs="http://db.csail.mit.edu/6.830/">News</a>
+    |
+  <a href="sched.html" tppabs="http://db.csail.mit.edu/6.830/sched.html">Schedule</a>
+    |
+  <a href="assign.html" tppabs="http://db.csail.mit.edu/6.830/assign.html">Psets/Quizzes/Labs</a>
+    |
+  <a href="notes.html" tppabs="http://db.csail.mit.edu/6.830/notes.html">Class notes</a>
+    | 
+  <a href="syllabus.html" tppabs="http://db.csail.mit.edu/6.830/syllabus.html">Syllabus</a>
+    | 
+  <a href="faq.html" tppabs="http://db.csail.mit.edu/6.830/faq.html">FAQ</a>
+<!-- | <a href="http://groups.google.com/group/6830-2008?hl=en">Discussion Board</a> -->
+]
+</div>
+
+
+
+
+<div class="content">
+
+<h1>6.830: Lecture 9 (10/08/09)</h1>
+
+In this lecture, we will discuss the problem of query optimization, focusing
+on the algorithms proposed in the classic "Selinger" paper.
+<p>
+
+Read the following papers:
+
+<ul>
+<li> <a name="selinger"> Patricia Selinger, M. Astrahan,
+D. Chamberlin, Raymond Lorie, and T. Price.</a>  <u>Access Path Selection
+in a Relational Database Management System</u>.  Proceedings of ACM
+SIGMOD, 1979.  Pages 22-34.  Red Book.  [<a href="javascript:if(confirm('http://doi.acm.org/10.1145/582095.582099  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://doi.acm.org/10.1145/582095.582099'" tppabs="http://doi.acm.org/10.1145/582095.582099">PDF</a>]
+
+<li> <i>Optionally</i>, you may also wish to look at:
+<a name="joinest"> Michael Mannino,
+Paichen Chu, and Thomas Sager.</a> <u>Statistical Profile Estimation in
+Database Systems</u>.  ACM Computing Surveys 20(3), 1988.  Pages
+191-221. [<a
+href="javascript:if(confirm('http://portal.acm.org/ft_gateway.cfm?id=62063&type=pdf&coll=GUIDE&dl=GUIDE&CFID=27807646&CFTOKEN=7327138  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://portal.acm.org/ft_gateway.cfm?id=62063&type=pdf&coll=GUIDE&dl=GUIDE&CFID=27807646&CFTOKEN=7327138'" tppabs="http://portal.acm.org/ft_gateway.cfm?id=62063&type=pdf&coll=GUIDE&dl=GUIDE&CFID=27807646&CFTOKEN=7327138">PDF</a>]
+Requires an MIT IP for access.  
+This paper discusses
+many of the techniques that used to make query optimization and cost
+estimation practical in modern database systems.  Will will cover some
+of the ideas at a high level in class.
+</ul>
+
+
+As you read, think about and come to class prepared to answer the
+following questions:
+
+<p>
+<ul>
+
+<li> The Selinger paper claims to be 'optimal'.  Under what
+assumptions is this optimality true? Can you think of a situation in
+which Selinger will definitely be non-optimal?
+
+<li> Query optimization is highly dependent on the effectiveness of
+cost estimation.  The cost metrics that Selinger proposes are very
+simple; how would you make them more sophisticated?  What is the
+impact of more sophisticated cost metrics on the performance of a
+database system?
+
+</ul>
+
+
+<p>
+
+
+<div class="change">
+Last change: 10/04/09.
+</div>
+</div>
+</body>
+</html>

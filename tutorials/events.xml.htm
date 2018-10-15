@@ -1,0 +1,391 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>6.830 Announcements</title>
+    <description>Announcements for MIT course 6.830: Database Systems</description>
+    <link>http://db.csail.mit.edu/6.830/</link>
+    <atom:link href="events.xml.htm" tppabs="http://db.csail.mit.edu/6.830/events.xml" rel="self" type="application/rss+xml" />
+
+    <language>en-us</language>
+    <ttl>5</ttl>
+
+    <!-- AUTHORING NOTES:
+    * RSS technically cannot contain HTML under the <description> tag. Escape < with &lt; e.g., 
+    *   &lt;a href="http://db.csail.mit.edu/6.830/assignments/q2-2008-solns.pdf">Quiz 2 solutions are now online&lt;/a>
+    * The date should be in RFC2822 format: http://www.faqs.org/rfcs/rfc2822.html
+        use: date +"%a, %d %b %Y %H:%M:%S %Z"
+    * To validate, use: http://feedvalidator.org/check.cgi?url=http%3A%2F%2Fdb.csail.mit.edu%2F6.830%2Fevents.xml
+    -->
+
+	<item>
+	<title> Lab 3 is posted </title>
+<description>
+
+&lt;a href="http://db.csail.mit.edu/6.830/assignments/lab3.html">Lab 3&lt;/a> is posted.  This lab includes &lt;a href="http://db.csail.mit.edu/6.830/6.830-lab3-supplement.tar.gz">supplemental code&lt;/a> (both
+test cases and lab files) that you will need.
+Follow &lt;a href="assignments/lab3.html#starting">these instructions&lt;/a> for installing it into your existing lab 2 solution.  If your lab
+2 solution does not compile or you need assistance, please contact us.
+
+    </description>
+	<pubDate>Fri, 16 Oct 2009 17:01:26 EDT</pubDate>
+    </item>
+    
+    <item> 
+      <title> 2008 Quiz 1 and Solutions </title>
+      <description>
+        The  &lt;a href="http://db.csail.mit.edu/6.830/assignments/q1-2008.pdf">2008 quiz 1&lt;a>
+        and &lt;a href="http://db.csail.mit.edu/6.830/assignments/q1-2008-solns.pdf">solutions&lt;a> are posted.  Note
+        that we will not have covered ARIES and log-based recovery by the time quiz 1 happens
+        this year, so you are not expected to be able to answer these questions.
+      </description>
+      <pubDate>Thu, 16 Oct 2009 10:06:00 EDT </pubDate>
+    </item>
+
+    <item> 
+      <title> Selinger Notes </title>
+      <description>
+        Slides (in &lt;a href="http://db.csail.mit.edu/6.830/lectures/selinger.ppt">PowerPoint&lt;a>
+        and &lt;a href="http://db.csail.mit.edu/6.830/lectures/selinger.pdf">PDF&lt;a> format) about
+        the Selinger Optimizer are posted.
+      </description>
+      <pubDate>Thu, 15 Oct 2009 12:26:00 EDT </pubDate>
+    </item>
+
+    <item> 
+	<title> Lab 2 Clarification about Table Names</title>
+	<description>
+	In Lab 2, your implementation of "addTable()" has particular constraints 
+	when called twice with the same table name.  The wording in the lab document
+	is a little bit unclear, so, to clarify:  If two tables are added by name,
+	both must be stored within the database; but if you try to access the table
+	by name (rather than by ID), the more-recently-added table will be used.
+	</description>
+	<pubDate>Wed, 14 Oct 2009 11:20:00 EDT</pubDate>
+    </item>
+	
+    <item> 
+	<title> Lab 2 Due Time -- Correction</title>
+	<description>
+	A version of Lab 2 was published that indicated that the lab was due before class on Thursday.  This is incorrect; the lab is due by the end of the day (11:59pm) on Thursday.
+	</description>
+	<pubDate>Tue, 13 Oct 2009 19:00:00 EDT</pubDate>
+    </item>
+
+    <item>
+	<title> Office Hours on Thursday this week </title>
+	<description> Because of the lab2 due date, the TA office hours are going to be from 5-8pm on Thursday, Oct 15 this week.</description>
+	<pubDate> Tue, 13 Oct 2009 09:38:26 EDT</pubDate>
+    </item>
+
+
+<item>
+<title>Running the parser</title>
+<description>
+The instructions for running the parser in lab2.html don't work.  
+We accidentally stripped the parser code out of SimpleDB.java before shipping lab1.  
+You can download the fixed SimpleDb.java from &lt;a href="http://db.csail.mit.edu/6.830/SimpleDb.java">here&lt;/a>, or
+patch it as follows:
+&lt;p>
+
+In SimpleDb.java, after the else-if block:
+
+&lt;pre>
+        } else if (args[0].equals("print")) {
+		...
+	}
+&lt;/pre>
+
+You should add:
+
+&lt;pre>
+        else if (args[0].equals("parser")) {
+            // Strip the first argument and call the parser
+            String[] newargs = new String[args.length-1];
+            for (int i = 1; i &lt; args.length; ++i) {
+                newargs[i-1] = args[i];
+            }
+            Parser.main(newargs);
+        }
+&lt;/pre>
+
+This goes just before the code:
+
+&lt;pre>
+	else { 
+             System.err.println("Unknown command: " + args[0]); 
+             System.exit(1); 
+        } 
+&lt;/pre>
+
+&lt;p>
+Alternatively, rather than patching or updating SimpleDB.java, you can run the parser directly 
+from the command-line by typing (from the top-level simpledb directory):
+&lt;pre>
+java -classpath bin/src/:lib/jline-0.9.94.jar:lib/sql4j.jar:lib/zql.jar Parser catalog.txt
+&lt;/pre>
+where catalog.txt is the name of the catalog file describing the schema of the tables you wish to query (as described
+in &lt;a href="http://db.csail.mit.edu/6.830/assignments/lab2.html#parser">Section 2.7 of lab2.html&lt;/a>).
+    </description>
+    <pubDate>Tue, 13 Oct 2009 09:09:00 EDT</pubDate>
+</item>
+
+<item>
+      <title> Lab 2 is posted </title>
+<description>
+
+&lt;a href="http://db.csail.mit.edu/6.830/assignments/lab2.html">Lab 2&lt;/a> is posted.  This lab includes &lt;a href="http://db.csail.mit.edu/6.830/6.830-lab2-supplement.tar.gz">supplemental code&lt;/a> (both
+test cases and lab files) that you will need.
+Follow &lt;a href="assignments/lab2.html#starting">these instructons&lt;/a> for installing it into your existing lab 1 solution.  If your lab
+1 solution does not compile or you need assistance, please contact us.
+
+    </description>
+	<pubDate>Sun, 4 Oct 2009 19:15:00 EDT</pubDate>
+    </item>
+
+
+    <item> 
+	<title> Lab 1 Office Hours Thursday 10/01</title>
+	<description>
+	  TAs are going to be available from 6-7pm (nizam) and 7-8pm(adam) for people with questions about lab 1.
+	  Location (same as OH): Gates building, 9th floor, the lounge across elevators.
+	</description>
+	<pubDate>Wed, 30 Sep 2009 22:43:09 EDT</pubDate>
+    </item>
+    
+<item>
+        <title> Lab 1 version inconsistency </title>
+        <description>
+          Over the past few days, we inadvertently posted links to an old version of lab 1 (from 2008) on this RSS feed.  The link in the lab1.html file was correct, and the links from this feed have now been corrected.  However, some of you may have downloaded and begun working the 2008 version of the lab 1 code.  Here's what this means to you:
+&lt;p>
+          1) If you have not yet started lab 1, please re-download the &lt;a href="http://db.csail.mit.edu/6.830/assignments/6.830-lab1.tar.gz"> lab tarball &lt;/a>
+&lt;p>
+          2) If you have already started lab 1, you don't need to replace the version of the code you have.  However, if you are working with the 2008 version of the code, the  
+&lt;a href="http://db.csail.mit.edu/6.830/assignments/lab1.html"> 2009 Lab 1 description &lt;/a>  is slightly incorrect in its description of the HeapFile/HeapPage format (we changed the format of HeapFiles between the two years).  To determine if you have the old version of the code, have a look at HeapPage.java.  If the constructor for HeapPage has a comment that looks like the code shown below, you have the old version of the lab.
+&lt;p>
+
+&lt;pre>
+    /**
+     * Constructor.
+     * Construct the HeapPage from a set of bytes of data read from disk.
+     * The format of a HeapPage is a set of 32-bit header words indicating
+     * the slots of the page that are in use, plus (BufferPool.PAGE_SIZE/tuple
+     * size) tuple slots, where tuple size is the size of tuples in this
+     * database table
+     * (which can be determined via a call to getTupleDesc in Catalog.)
+     *
+     * The number of 32-bitheader words is equal to:
+     * 
+     * (no. tuple slots / 32) + 1
+     * 
+     * @see Database#getCatalog
+     * @see Catalog#getTupleDesc
+     * @see BufferPool#PAGE_SIZE
+     */
+    public HeapPage(HeapPageId id, byte[] data) throws IOException {
+&lt;/pre>
+
+&lt;p>
+In contrast, the 2009 version of the lab has the following comment before the HeapPage constructor:
+&lt;p>
+
+&lt;pre>
+    /**
+     * Create a HeapPage from a set of bytes of data read from disk.
+     * The format of a HeapPage is a set of header bytes indicating
+     * the slots of the page that are in use, some number of tuple slots.
+     *  Specifically, the number of tuples is equal to: 
+     *
+     *          floor((BufferPool.PAGE_SIZE*8) / (tuple size * 8 + 1))
+     *
+     *  where tuple size is the size of tuples in this
+     * database table, which can be determined via {@link Catalog#getTupleDesc}.
+     * The number of 8-bit header words is equal to:
+     * 
+     *      ceiling(no. tuple slots / 8)
+     * 
+     * @see Database#getCatalog
+     * @see Catalog#getTupleDesc
+     * @see BufferPool#PAGE_SIZE
+     */
+    public HeapPage(HeapPageId id, byte[] data) throws IOException {
+&lt;/pre>
+
+&lt;p>  These comments illustrate the most significant differences between the HeapFile format in the two versions of the lab.
+&lt;p>
+In the
+event that you do have the old 2008 version, you should refer to the
+ &lt;a href="http://db.csail.mit.edu/6.830/assignments/lab1-2008.html"> 2008 Lab 1 description &lt;/a> when working through the lab.
+The only section which is substantially different is 2.5., regarding the format of the HeapFile access method. 
+&lt;p>
+If you choose to submit the 2008 lab, we will grade it with the test cases from 2008, and you won't be penalized in any way.  
+&lt;p>
+We are sorry for this complication.  Please let us know if you are confused or need help addressing this issue.
+        </description>
+        <pubDate>Wed, 30 Sep 2009 21:11:00 EDT</pubDate>
+    </item>
+
+    <item>
+        <title> Minor correction to lab1 build.xml file </title>
+        <description>
+	It turns out that the build.xml file of the first version of lab1 had a typo. If you downloaded the tarball
+	before Monday, Sep 28 your build.xml might have this issue. Line 84 of the build.xml file should have value="SimpleDb"
+	instead of value="simpledb". Please check your file for this typo. You can either	
+	
+        &lt;ul> &lt;li> Download the &lt;a href="http://db.csail.mit.edu/6.830/assignments/6.830-lab1.tar.gz"> new tarball &lt;/a> (posted 9/27, 11:45 PM) or
+                &lt;li> Download the &lt;a href="http://db.csail.mit.edu/6.830/assignments/build.xml"> corrected build.xml &lt;/a> or
+                &lt;li> Download the patch &lt;a href="http://db.csail.mit.edu/6.830/lab1-build.xml.patch.gz"> lab1-build.xml.patch.gz &lt;/a> and apply it by &lt;br>
+                        &lt;code> ~/path/to/6.830-lab1 $ patch -p1 -i lab1-build.xml.patch &lt;/code> or
+                &lt;li> Manually edit the build.xml file and replace "simpledb" with "SimpleDb" on line 84.
+        &lt;/ul>
+        </description>
+        <pubDate>Tue, 29 Sep 2009 01:11:51 EDT</pubDate>
+    </item>
+	
+	<item>
+		<title> Lab Review Slides posted</title>
+		<description> 
+			You can download the &lt;a href="http://db.csail.mit.edu/6.830/assignments/lab1-tutorial.ppt"> Power Point slides&lt;/a> or 
+				the &lt;a href="http://db.csail.mit.edu/6.830/assignments/lab1-tutorial.pdf"> pdf &lt;/a>
+		</description>
+		<pubDate>Mon, 28 Sep 2009 23:26:45 EDT </pubDate>
+	</item>
+
+	<item>
+      <title>Lab Review Tonight, 32-G449, 7PM</title>
+      <description>
+     There will be a review session to help you get started with Lab 1 in 32-G449 at 7PM tonight.  Slides will be posted afterwards.
+
+</description>
+      <pubDate>Mon, 28 Sep 2009 15:00:00 EDT</pubDate>
+    </item>
+
+	<item>
+      <title>Final Project Description and Suggested Projects</title>
+      <description>
+      &lt;a href="http://db.csail.mit.edu/6.830/assignments/final_proj.html">A description of what is expected for the final project (as well as some suggested ideas) &lt;/a> is posted. 
+Your project proposal is due 10/15/2009, and the final project presentations are 12/10/2009.  Students taking 6.814 are not required to do a final project, but may instead opt to do
+two additional labs.  We will arrange meetings with all of the project groups to discuss possible ideas and directions in the coming weeks.
+
+</description>
+      <pubDate>Mon, 28 Sep 2009 08:55:00 EDT</pubDate>
+    </item>
+
+    <item>
+	<title> Change in lab1: HeapPageReadTest.testDirty() removed </title>
+ 	<description>
+	  You are not responsible for passing HeapPageReadTest.testDirty()  for this lab. You can either
+	&lt;ul> &lt;li> Download the &lt;a href="http://db.csail.mit.edu/6.830/assignments/6.830-lab1.tar.gz"> new tarball &lt;/a> (posted 9/27, 11:45 PM) or
+		&lt;li> Download the &lt;a href="http://db.csail.mit.edu/6.830/assignments/HeapPageReadTest.java"> new HeapPageReadTest.java &lt;/a> or
+		&lt;li> Download the patch &lt;a href="http://db.csail.mit.edu/6.830/lab1.patch.gz"> lab1.patch.gz &lt;/a> and apply it by &lt;br>
+                	&lt;code> ~/path/to/6.830-lab1 $ patch -p1 -i lab1.patch &lt;/code> or 
+		&lt;li> Comment out this method in your HeapPageReadTest.java file or
+		&lt;li> Ignore the failure of this test case when you run the tests.
+	&lt;/ul>
+	</description>
+	<pubDate>Sun, 27 Sep 2009 23:46:01 EDT</pubDate>
+    </item>
+
+	<item>
+      <title>Problem Set 2 is Posted</title>
+      <description>
+      &lt;a href="http://db.csail.mit.edu/6.830/assignments/ps2.pdf">Problem Set 2 is posted&lt;/a>. It is due October 21, 2009.
+      </description>
+      <pubDate>Thu, 24 Sep 2009 12:29:00 EDT</pubDate>
+    </item>
+
+	<item>
+      <title>Lab1 Posted</title>
+      <description>
+      &lt;a href="http://db.csail.mit.edu/6.830/assignments/lab1.html">Lab1 is posted&lt;/a>. You can find the source code &lt;a href="http://db.csail.mit.edu/6.830/assignments/6.830-lab1.tar.gz">here&lt;/a>.
+      </description>
+      <pubDate>Wed, 23 Sep 2009 12:43:29 EDT</pubDate>
+    </item>
+    
+    <item>
+      <title>SQL Zoo issues</title>
+      <description>
+	Problem Set 1 recommends &lt;a href="http://sqlzoo.net">http://sqlzoo.net&lt;/a> as a tutorial site for learning SQL.  However, this site has been down for at least the past several days.  An alternate tutorial can be found at &lt;a href="http://w3schools.com/sql/sql_intro.asp">http://w3schools.com/sql/sql_intro.asp&lt;/a>.
+      </description>
+      <pubDate>Tue, 22 Sep 2009 23:55:00 EDT</pubDate>
+    </item>
+
+    <item>
+      <title>Submitting PS1</title>
+      <description>
+PS1 is due next Tuesday (9/22).  You may submit it in paper in class, or by 11:59 PM by emailing it to 6830-submit-2009@nms.csail.mit.edu .
+We prefer PDF or ASCII text format.
+      </description>
+      <pubDate>Fri, 18 Sep 2009 11:51:00 EDT</pubDate>
+    </item>
+
+<item>
+      <title>BCNF</title>
+      <description>
+        &lt;a href="http://db.lcs.mit.edu/6.830/lectures/lec3_slides.ppt">PPT slides on BCNF &lt;/a>
+       are available.
+      </description>
+      <pubDate>Thu, 17 Sep 2009 21:50:00 EDT</pubDate>
+    </item>
+
+    <item>
+      <title>Q6 in PS1 Changed</title>
+      <description>
+	There was a bit of an ambiguity in the statement of Q6. We changed it to look like this:
+        "Find the top 10 managers who have given the most number of grants to a single PI."
+	We basically want you to find the top 10 managers, when we list the managers according to the number of grants
+	they have given to a single PI.
+      </description>
+      <pubDate>Thu, 17 Sep 2009 14:58:50 EDT</pubDate>
+    </item>
+
+    
+
+    <item>
+      <title>Problem Set 1 Posted</title>
+      <description>
+        &lt;a href="http://db.csail.mit.edu/6.830/assignments/ps1.pdf">Problem Set 1 is posted&lt;/a>.  Assignments (and their solutions when they become available) are posted on the  &lt;a href="http://db.csail.mit.edu/6.830/assign.html">assignments page&lt;/a>.
+      </description>
+      <pubDate>Tue, 15 Sep 2009 11:20:00 EDT</pubDate>
+    </item>
+
+    <item>
+      <title>Lecture 1 Notes Posted</title>
+      <description>
+        Lecture notes are posted after each lecture on the &lt;a href="http://db.csail.mit.edu/6.830/notes.html">notes page&lt;/a>.  Lecture 1 is now available (we won't post news items for future lecture notes.)
+      </description>
+      <pubDate>Tue, 15 Sep 2009 11:01:00 EDT</pubDate>
+    </item>
+
+    <item>
+      <title>Red Book Online</title>
+      <description>
+        One of the &lt;a href="http://db.csail.mit.edu/6.830/syllabus.html#text">two course textbooks&lt;/a> is available online, from books24x7.com, from any MIT IP address.
+        Please follow  &lt;a href="http://owens.mit.edu:8888/sfx_local?bookid=10757&amp;rft.genre=book&amp;sid=Barton:Books24x7">this link&lt;/a>.
+        Both books are also available for purchase from the Coop, or from Amazon.com.
+      </description>
+      <pubDate>Thu, 10 Sep 2009 10:23:00 EDT</pubDate>
+    </item>
+
+    <item>
+      <title>Course Mailing Lists </title>
+      <description> We've created two mailing lists for the course, &lt;a href="https://mailman.mit.edu:444/mailman/listinfo/6830-disucss">6830-discuss@mit.edu&lt;/a> and &lt;a href="https://mailman.mit.edu:444/mailman/listinfo/6830-announce">6830-announce@mit.edu&lt;/a>.  We will add you to these lists automatically when you sign up at the first class, but if you miss class you can request to be added manually using the links above (MIT certificates are required to access these lists).  Please use the discuss list for any class related discussion (e.g., questions about labs or problem sets);  we will post important class messages on the announce list (it will be very low traffic, so please don't unsubscribe!)
+</description>
+      <pubDate>Thu, 10 Sep 2009 09:19:00 EDT</pubDate>
+    </item>
+
+    <item>
+      <title>TA Office Hours announced </title>
+      <description> TA Office hours are now available on the web page. </description>
+      <pubDate>Tue, 08 Sep 2009 17:29:28 EDT</pubDate>
+    </item>
+
+    <item>
+      <title>Class web page posted</title>
+      <description>Course web page set up.  The first day of class is Thursday, September 10.</description>
+      <pubDate>Thu, 27 Aug 2009 03:59:00 EST</pubDate>
+    </item>
+    
+
+ 
+  </channel>
+</rss>

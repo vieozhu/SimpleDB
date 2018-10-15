@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head><meta http-equiv=Content-Type content='text/html; charset=UTF-8'>
+
+<title>6.830: Lecture 3 (9/17/09)</title>
+<link rel="stylesheet" href="style.css" tppabs="http://db.csail.mit.edu/6.830/style.css" type="text/css" media="screen">
+
+</head>
+<body>
+
+<div style="width: 950px">
+<div class="menubar">
+[
+  <a href="index.htm" tppabs="http://db.csail.mit.edu/6.830/">News</a>
+    |
+  <a href="sched.html" tppabs="http://db.csail.mit.edu/6.830/sched.html">Schedule</a>
+    |
+  <a href="assign.html" tppabs="http://db.csail.mit.edu/6.830/assign.html">Psets/Quizzes/Labs</a>
+    |
+  <a href="notes.html" tppabs="http://db.csail.mit.edu/6.830/notes.html">Class notes</a>
+    | 
+  <a href="syllabus.html" tppabs="http://db.csail.mit.edu/6.830/syllabus.html">Syllabus</a>
+    | 
+  <a href="faq.html" tppabs="http://db.csail.mit.edu/6.830/faq.html">FAQ</a>
+<!-- | <a href="http://groups.google.com/group/6830-2008?hl=en">Discussion Board</a> -->
+]
+</div>
+
+
+
+
+<div class="content">
+
+<h1>6.830: Lecture 3 (9/17/09)</h1>
+
+The reading for this lecture is:
+<ol>
+<li> The start of Chapter 2 to end of Section 2.6 (pages 25-46) of Ramakrishnan and Gehrke
+<li> Section 3.5 (pages 75-86) of Ramakrishnan and Gehrke
+<li> The start of Chapter 19 to end of Section 19.4 (pages 605-619) of Ramakrishnan and Gehrke
+</ol>
+
+The first two readings discuss ER modeling, which is one practical way
+which can be used to model a database and generate database schemas.
+
+<p>
+
+The third reading discusses a formal model based on the notion of
+functional dependencies that makes it possible to reason about whether
+schemas are free of anomalies that lead to operational
+problems in database system execution.  You should focus on
+understanding BCNF and 3NF; we will not discuss the higher normal
+forms in much detail.
+
+<p>
+
+The relationship between these three readings is that ER modeling
+generally produces schemas that conform to 3NF/BCNF, though this isn't
+strictly true (see section 19.7 for a discussion of cases when ER
+modeling doesn't lead to BCNF or 3NF schemas.)  For those who are
+interested, it turns out that there are relatively straightforward
+algorithms for generating BCNF/3NF schemas given a collection of
+functional dependencies -- these are given in Sections 19.5 and 19.6
+of Ramakrishnan and Gehrke, but you don't need to know these in
+detail.
+
+<p>
+
+As you read these chapters, think about and be prepared to answer the
+following questions in Lecture:
+
+<p>
+<ul>
+<li> What problems does schema normalization solve?  Do you believe
+that these are important problems?
+<li> What is the distinction between BCNF and 3NF?  Is there a reason
+to prefer one over the other?
+<li> Think about a data set you have worked with recently, and try to derive
+a set of functional dependencies that correspond to it.  What assumptions
+did you have to make in modeling your data in this way?
+<li> How is it that ER modeling generally leads to BCNF/3NF schemas?
+</ul>
+
+
+<p>
+
+
+<div class="change">
+Last change: 09/5/08.
+</div>
+</div>
+</body>
+</html>

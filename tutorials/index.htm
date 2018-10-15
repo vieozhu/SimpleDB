@@ -1,0 +1,713 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head><meta http-equiv=Content-Type content='text/html; charset=UTF-8'>
+
+<title>6.830/6.814: Database Systems (Fall 2009)</title>
+<link rel="stylesheet" href="style.css" tppabs="http://db.csail.mit.edu/6.830/style.css" type="text/css" media="screen">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="/6.830/events.xml">
+</head>
+<body>
+
+<div style="width: 950px">
+<div class="menubar">
+[
+  News
+    |
+  <a href="sched.html" tppabs="http://db.csail.mit.edu/6.830/sched.html">Schedule</a>
+    |
+  <a href="assign.html" tppabs="http://db.csail.mit.edu/6.830/assign.html">Psets/Quizzes/Labs</a>
+    |
+  <a href="notes.html" tppabs="http://db.csail.mit.edu/6.830/notes.html">Class notes</a>
+    | 
+  <a href="syllabus.html" tppabs="http://db.csail.mit.edu/6.830/syllabus.html">Syllabus</a>
+    | 
+  <a href="faq.html" tppabs="http://db.csail.mit.edu/6.830/faq.html">FAQ</a>
+<!-- | <a href="http://groups.google.com/group/6830-2008?hl=en">Discussion Board</a> -->
+]
+</div>
+
+
+
+<img class="logo" width="200" src="databaselogo.jpg" tppabs="http://db.csail.mit.edu/6.830/databaselogo.jpg"></img>
+
+
+<div class="content">
+
+<h1>6.830/6.814: Database Systems (Fall 2009)</h1>
+
+<table border="0" width="100%">
+<tr>
+    <td><b>Units:</b></td>
+    <td>3-0-9 (H)</td>
+</tr>
+<tr>
+    <td><b>When:</b></td>
+  <td>TR 1:00 - 2:30</td>
+</tr>
+<tr>
+    <td><b>Where:</td>
+    <td><a href="javascript:if(confirm('http://whereis.mit.edu/map-jpg?mapterms=32  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://whereis.mit.edu/map-jpg?mapterms=32'" tppabs="http://whereis.mit.edu/map-jpg?mapterms=32">32-155</a></td>
+</tr>
+<tr>
+    <td><b>Instructors:</b></td>
+    <td><a href="javascript:if(confirm('http://db.csail.mit.edu/madden  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://db.csail.mit.edu/madden'" tppabs="http://db.csail.mit.edu/madden">Samuel Madden</a> (madden AT csail.mit.edu)</td>
+</tr><tr>
+<td></td>    <td>Robert Morris (rtm AT csail.mit.edu)</td>
+</tr>
+  <tr> <td> <br>Staff mailing list</b>: </td> <td> 6830-staff AT nms.csail.mit.edu </td> </tr>
+
+<tr>
+    <td><b>Instructor office hours:</b></td>
+    <td>by appointment</td>
+</tr>
+<tr>
+    <td><b>TAs:</b></td>
+    <td>Nizameddin Ordulu (nizameddin AT gmail.com)</td>
+</tr><tr><td></td>
+    <td>Adam Seering (aseering AT mit.edu)</td>
+</tr>
+<tr><td colspan="2"><b>Please submit general questions to the Staff mailing list: 6830-staff AT nms.csail.mit.edu</b></td></tr>
+<tr>
+    <td><b>TA office hours when:</b></td>   
+    <td>Monday 11:00-12:00 (Adam Seering)</td>
+</tr>
+<tr>
+    <td></td><td>Tuesday 16:00-17:00 (Nizameddin Ordulu)</td>
+</tr>
+<tr>
+    <td><b>TA office hours where:</b></td>
+    <td>32-G9 Lounge (right out of the elevators)</td>
+</tr>
+</table>
+
+<hr>
+
+<HTML>
+    <HEAD>
+        <TITLE>
+            6.830 Announcements
+
+        </TITLE>
+    </HEAD>
+    <BODY>
+<!-- ExtraLabs Software: http://www.extralabs.net -->
+
+<H2>6.830 Announcements
+</H2>
+(<a href="events.xml.htm" tppabs="http://db.csail.mit.edu/6.830/events.xml">RSS Feed</a>) <br>
+<!--        Announcements for MIT course 6.830: Database Systems<br><br>-->
+        <TABLE width="100%">
+            
+            <TR>
+                <TD>
+                    <u> 10/16/09:                 <B>Lab 3 is posted</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    <a href="lab3.html" tppabs="http://db.csail.mit.edu/6.830/assignments/lab3.html">Lab 3</a> is posted.  This lab includes <a href="6.830-lab3-supplement.tar.gz" tppabs="http://db.csail.mit.edu/6.830/6.830-lab3-supplement.tar.gz">supplemental code</a> (both
+test cases and lab files) that you will need.
+Follow <a href="lab3.html#starting" tppabs="http://db.csail.mit.edu/6.830/assignments/lab3.html#starting">these instructions</a> for installing it into your existing lab 2 solution.  If your lab
+2 solution does not compile or you need assistance, please contact us.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 10/16/09:                 <B>2008 Quiz 1 and Solutions</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    The  <a href="q1-2008.pdf" tppabs="http://db.csail.mit.edu/6.830/assignments/q1-2008.pdf">2008 quiz 1<a>
+        and <a href="q1-2008-solns.pdf" tppabs="http://db.csail.mit.edu/6.830/assignments/q1-2008-solns.pdf">solutions<a> are posted.  Note
+        that we will not have covered ARIES and log-based recovery by the time quiz 1 happens
+        this year, so you are not expected to be able to answer these questions.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 10/15/09:                 <B>Selinger Notes</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    Slides (in <a href="selinger.ppt" tppabs="http://db.csail.mit.edu/6.830/lectures/selinger.ppt">PowerPoint<a>
+        and <a href="selinger.pdf" tppabs="http://db.csail.mit.edu/6.830/lectures/selinger.pdf">PDF<a> format) about
+        the Selinger Optimizer are posted.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 10/14/09:                 <B>Lab 2 Clarification about Table Names</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    In Lab 2, your implementation of "addTable()" has particular constraints 
+	when called twice with the same table name.  The wording in the lab document
+	is a little bit unclear, so, to clarify:  If two tables are added by name,
+	both must be stored within the database; but if you try to access the table
+	by name (rather than by ID), the more-recently-added table will be used.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 10/13/09:                 <B>Lab 2 Due Time -- Correction</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    A version of Lab 2 was published that indicated that the lab was due before class on Thursday.  This is incorrect; the lab is due by the end of the day (11:59pm) on Thursday.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 10/13/09:                 <B>Office Hours on Thursday this week</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    Because of the lab2 due date, the TA office hours are going to be from 5-8pm on Thursday, Oct 15 this week.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 10/13/09:                 <B>Running the parser</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    The instructions for running the parser in lab2.html don't work.  
+We accidentally stripped the parser code out of SimpleDB.java before shipping lab1.  
+You can download the fixed SimpleDb.java from <a href="SimpleDb.java.htm" tppabs="http://db.csail.mit.edu/6.830/SimpleDb.java">here</a>, or
+patch it as follows:
+<p>
+
+In SimpleDb.java, after the else-if block:
+
+<pre>
+        } else if (args[0].equals("print")) {
+		...
+	}
+</pre>
+
+You should add:
+
+<pre>
+        else if (args[0].equals("parser")) {
+            // Strip the first argument and call the parser
+            String[] newargs = new String[args.length-1];
+            for (int i = 1; i < args.length; ++i) {
+                newargs[i-1] = args[i];
+            }
+            Parser.main(newargs);
+        }
+</pre>
+
+This goes just before the code:
+
+<pre>
+	else { 
+             System.err.println("Unknown command: " + args[0]); 
+             System.exit(1); 
+        } 
+</pre>
+
+<p>
+Alternatively, rather than patching or updating SimpleDB.java, you can run the parser directly 
+from the command-line by typing (from the top-level simpledb directory):
+<pre>
+java -classpath bin/src/:lib/jline-0.9.94.jar:lib/sql4j.jar:lib/zql.jar Parser catalog.txt
+</pre>
+where catalog.txt is the name of the catalog file describing the schema of the tables you wish to query (as described
+in <a href="lab2.html#parser" tppabs="http://db.csail.mit.edu/6.830/assignments/lab2.html#parser">Section 2.7 of lab2.html</a>).
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 10/04/09:                 <B>Lab 2 is posted</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    <a href="lab2.html" tppabs="http://db.csail.mit.edu/6.830/assignments/lab2.html">Lab 2</a> is posted.  This lab includes <a href="6.830-lab2-supplement.tar.gz" tppabs="http://db.csail.mit.edu/6.830/6.830-lab2-supplement.tar.gz">supplemental code</a> (both
+test cases and lab files) that you will need.
+Follow <a href="lab2.html#starting" tppabs="http://db.csail.mit.edu/6.830/assignments/lab2.html#starting">these instructons</a> for installing it into your existing lab 1 solution.  If your lab
+1 solution does not compile or you need assistance, please contact us.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/30/09:                 <B>Lab 1 Office Hours Thursday 10/01</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    TAs are going to be available from 6-7pm (nizam) and 7-8pm(adam) for people with questions about lab 1.
+	  Location (same as OH): Gates building, 9th floor, the lounge across elevators.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/30/09:                 <B>Lab 1 version inconsistency</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    Over the past few days, we inadvertently posted links to an old version of lab 1 (from 2008) on this RSS feed.  The link in the lab1.html file was correct, and the links from this feed have now been corrected.  However, some of you may have downloaded and begun working the 2008 version of the lab 1 code.  Here's what this means to you:
+<p>
+          1) If you have not yet started lab 1, please re-download the <a href="6.830-lab1.tar.gz" tppabs="http://db.csail.mit.edu/6.830/assignments/6.830-lab1.tar.gz"> lab tarball </a>
+<p>
+          2) If you have already started lab 1, you don't need to replace the version of the code you have.  However, if you are working with the 2008 version of the code, the  
+<a href="lab1.html" tppabs="http://db.csail.mit.edu/6.830/assignments/lab1.html"> 2009 Lab 1 description </a>  is slightly incorrect in its description of the HeapFile/HeapPage format (we changed the format of HeapFiles between the two years).  To determine if you have the old version of the code, have a look at HeapPage.java.  If the constructor for HeapPage has a comment that looks like the code shown below, you have the old version of the lab.
+<p>
+
+<pre>
+    /**
+     * Constructor.
+     * Construct the HeapPage from a set of bytes of data read from disk.
+     * The format of a HeapPage is a set of 32-bit header words indicating
+     * the slots of the page that are in use, plus (BufferPool.PAGE_SIZE/tuple
+     * size) tuple slots, where tuple size is the size of tuples in this
+     * database table
+     * (which can be determined via a call to getTupleDesc in Catalog.)
+     *
+     * The number of 32-bitheader words is equal to:
+     * 
+     * (no. tuple slots / 32) + 1
+     * 
+     * @see Database#getCatalog
+     * @see Catalog#getTupleDesc
+     * @see BufferPool#PAGE_SIZE
+     */
+    public HeapPage(HeapPageId id, byte[] data) throws IOException {
+</pre>
+
+<p>
+In contrast, the 2009 version of the lab has the following comment before the HeapPage constructor:
+<p>
+
+<pre>
+    /**
+     * Create a HeapPage from a set of bytes of data read from disk.
+     * The format of a HeapPage is a set of header bytes indicating
+     * the slots of the page that are in use, some number of tuple slots.
+     *  Specifically, the number of tuples is equal to: 
+     *
+     *          floor((BufferPool.PAGE_SIZE*8) / (tuple size * 8 + 1))
+     *
+     *  where tuple size is the size of tuples in this
+     * database table, which can be determined via {@link Catalog#getTupleDesc}.
+     * The number of 8-bit header words is equal to:
+     * 
+     *      ceiling(no. tuple slots / 8)
+     * 
+     * @see Database#getCatalog
+     * @see Catalog#getTupleDesc
+     * @see BufferPool#PAGE_SIZE
+     */
+    public HeapPage(HeapPageId id, byte[] data) throws IOException {
+</pre>
+
+<p>  These comments illustrate the most significant differences between the HeapFile format in the two versions of the lab.
+<p>
+In the
+event that you do have the old 2008 version, you should refer to the
+ <a href="lab1-2008.html" tppabs="http://db.csail.mit.edu/6.830/assignments/lab1-2008.html"> 2008 Lab 1 description </a> when working through the lab.
+The only section which is substantially different is 2.5., regarding the format of the HeapFile access method. 
+<p>
+If you choose to submit the 2008 lab, we will grade it with the test cases from 2008, and you won't be penalized in any way.  
+<p>
+We are sorry for this complication.  Please let us know if you are confused or need help addressing this issue.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/29/09:                 <B>Minor correction to lab1 build.xml file</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    It turns out that the build.xml file of the first version of lab1 had a typo. If you downloaded the tarball
+	before Monday, Sep 28 your build.xml might have this issue. Line 84 of the build.xml file should have value="SimpleDb"
+	instead of value="simpledb". Please check your file for this typo. You can either	
+	
+        <ul> <li> Download the <a href="6.830-lab1.tar.gz" tppabs="http://db.csail.mit.edu/6.830/assignments/6.830-lab1.tar.gz"> new tarball </a> (posted 9/27, 11:45 PM) or
+                <li> Download the <a href="build.xml.htm" tppabs="http://db.csail.mit.edu/6.830/assignments/build.xml"> corrected build.xml </a> or
+                <li> Download the patch <a href="lab1-build.xml.patch.gz" tppabs="http://db.csail.mit.edu/6.830/lab1-build.xml.patch.gz"> lab1-build.xml.patch.gz </a> and apply it by <br>
+                        <code> ~/path/to/6.830-lab1 $ patch -p1 -i lab1-build.xml.patch </code> or
+                <li> Manually edit the build.xml file and replace "simpledb" with "SimpleDb" on line 84.
+        </ul>
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/28/09:                 <B>Lab Review Slides posted</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    You can download the <a href="lab1-tutorial.ppt" tppabs="http://db.csail.mit.edu/6.830/assignments/lab1-tutorial.ppt"> Power Point slides</a> or 
+				the <a href="lab1-tutorial.pdf" tppabs="http://db.csail.mit.edu/6.830/assignments/lab1-tutorial.pdf"> pdf </a>
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/28/09:                 <B>Lab Review Tonight, 32-G449, 7PM</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    There will be a review session to help you get started with Lab 1 in 32-G449 at 7PM tonight.  Slides will be posted afterwards.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/28/09:                 <B>Final Project Description and Suggested Projects</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    <a href="final_proj.html" tppabs="http://db.csail.mit.edu/6.830/assignments/final_proj.html">A description of what is expected for the final project (as well as some suggested ideas) </a> is posted. 
+Your project proposal is due 10/15/2009, and the final project presentations are 12/10/2009.  Students taking 6.814 are not required to do a final project, but may instead opt to do
+two additional labs.  We will arrange meetings with all of the project groups to discuss possible ideas and directions in the coming weeks.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/27/09:                 <B>Change in lab1: HeapPageReadTest.testDirty() removed</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    You are not responsible for passing HeapPageReadTest.testDirty()  for this lab. You can either
+	<ul> <li> Download the <a href="6.830-lab1.tar.gz" tppabs="http://db.csail.mit.edu/6.830/assignments/6.830-lab1.tar.gz"> new tarball </a> (posted 9/27, 11:45 PM) or
+		<li> Download the <a href="HeapPageReadTest.java" tppabs="http://db.csail.mit.edu/6.830/assignments/HeapPageReadTest.java"> new HeapPageReadTest.java </a> or
+		<li> Download the patch <a href="lab1.patch.gz" tppabs="http://db.csail.mit.edu/6.830/lab1.patch.gz"> lab1.patch.gz </a> and apply it by <br>
+                	<code> ~/path/to/6.830-lab1 $ patch -p1 -i lab1.patch </code> or 
+		<li> Comment out this method in your HeapPageReadTest.java file or
+		<li> Ignore the failure of this test case when you run the tests.
+	</ul>
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/24/09:                 <B>Problem Set 2 is Posted</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    <a href="ps2.pdf" tppabs="http://db.csail.mit.edu/6.830/assignments/ps2.pdf">Problem Set 2 is posted</a>. It is due October 21, 2009.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/23/09:                 <B>Lab1 Posted</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    <a href="lab1.html" tppabs="http://db.csail.mit.edu/6.830/assignments/lab1.html">Lab1 is posted</a>. You can find the source code <a href="6.830-lab1.tar.gz" tppabs="http://db.csail.mit.edu/6.830/assignments/6.830-lab1.tar.gz">here</a>.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/22/09:                 <B>SQL Zoo issues</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    Problem Set 1 recommends <a href="javascript:if(confirm('http://sqlzoo.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://sqlzoo.net/'" tppabs="http://sqlzoo.net/">http://sqlzoo.net</a> as a tutorial site for learning SQL.  However, this site has been down for at least the past several days.  An alternate tutorial can be found at <a href="javascript:if(confirm('http://w3schools.com/sql/sql_intro.asp  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://w3schools.com/sql/sql_intro.asp'" tppabs="http://w3schools.com/sql/sql_intro.asp">http://w3schools.com/sql/sql_intro.asp</a>.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/18/09:                 <B>Submitting PS1</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    PS1 is due next Tuesday (9/22).  You may submit it in paper in class, or by 11:59 PM by emailing it to 6830-submit-2009@nms.csail.mit.edu .
+We prefer PDF or ASCII text format.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/17/09:                 <B>BCNF</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    <a href="javascript:if(confirm('http://db.lcs.mit.edu/6.830/lectures/lec3_slides.ppt  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://db.lcs.mit.edu/6.830/lectures/lec3_slides.ppt'" tppabs="http://db.lcs.mit.edu/6.830/lectures/lec3_slides.ppt">PPT slides on BCNF </a>
+       are available.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/17/09:                 <B>Q6 in PS1 Changed</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    There was a bit of an ambiguity in the statement of Q6. We changed it to look like this:
+        "Find the top 10 managers who have given the most number of grants to a single PI."
+	We basically want you to find the top 10 managers, when we list the managers according to the number of grants
+	they have given to a single PI.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/15/09:                 <B>Problem Set 1 Posted</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    <a href="ps1.pdf" tppabs="http://db.csail.mit.edu/6.830/assignments/ps1.pdf">Problem Set 1 is posted</a>.  Assignments (and their solutions when they become available) are posted on the  <a href="assign.html" tppabs="http://db.csail.mit.edu/6.830/assign.html">assignments page</a>.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/15/09:                 <B>Lecture 1 Notes Posted</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    Lecture notes are posted after each lecture on the <a href="notes.html" tppabs="http://db.csail.mit.edu/6.830/notes.html">notes page</a>.  Lecture 1 is now available (we won't post news items for future lecture notes.)
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/10/09:                 <B>Red Book Online</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    One of the <a href="syllabus.html#text" tppabs="http://db.csail.mit.edu/6.830/syllabus.html#text">two course textbooks</a> is available online, from books24x7.com, from any MIT IP address.
+        Please follow  <a href="javascript:if(confirm('http://owens.mit.edu:8888/sfx_local?bookid=10757&rft.genre=book&sid=Barton:Books24x7  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://owens.mit.edu:8888/sfx_local?bookid=10757&rft.genre=book&sid=Barton:Books24x7'" tppabs="http://owens.mit.edu:8888/sfx_local?bookid=10757&rft.genre=book&sid=Barton:Books24x7">this link</a>.
+        Both books are also available for purchase from the Coop, or from Amazon.com.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/10/09:                 <B>Course Mailing Lists</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    We've created two mailing lists for the course, <a href="javascript:if(confirm('https://mailman.mit.edu:444/mailman/listinfo/6830-disucss  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?'))window.location='https://mailman.mit.edu:444/mailman/listinfo/6830-disucss'" tppabs="https://mailman.mit.edu:444/mailman/listinfo/6830-disucss">6830-discuss@mit.edu</a> and <a href="javascript:if(confirm('https://mailman.mit.edu:444/mailman/listinfo/6830-announce  \n\nThis file was not retrieved by Teleport Pro, because it is addressed using an unsupported protocol (e.g., gopher).  \n\nDo you want to open it from the server?'))window.location='https://mailman.mit.edu:444/mailman/listinfo/6830-announce'" tppabs="https://mailman.mit.edu:444/mailman/listinfo/6830-announce">6830-announce@mit.edu</a>.  We will add you to these lists automatically when you sign up at the first class, but if you miss class you can request to be added manually using the links above (MIT certificates are required to access these lists).  Please use the discuss list for any class related discussion (e.g., questions about labs or problem sets);  we will post important class messages on the announce list (it will be very low traffic, so please don't unsubscribe!)
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 09/08/09:                 <B>TA Office Hours announced</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    TA Office hours are now available on the web page.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>            
+            <TR>
+                <TD>
+                    <u> 08/27/09:                 <B>Class web page posted</B></u><p>
+                </TD>
+            </TR>
+            <TR>
+                <TD>                
+                    Course web page set up.  The first day of class is Thursday, September 10.
+		    <p>
+<hr>
+            </TR>
+            
+        </TABLE>
+
+    </BODY>
+</HTML>
+<h2>Description</h2>
+
+<p>
+
+This course relies on primary readings from the database community to
+introduce graduate students to the foundations of database systems,
+focusing on basics such as the relational algebra and data model,
+schema normalization, query optimization, and transactions.  It is
+designed for students who have taken 6.033 (or equivalent); no prior
+database experience is assumed though students who have taken an
+undergraduate course in databases are encouraged to attend.
+
+</p>
+
+<p>
+
+Classes consist of lectures and discussions based on readings from the
+database literature.  Grades in 6.830 are assigned based on a semester long
+project, as well as two exams and 7 assignments -- 3 labs and 4 problem sets --
+of varying length.  Grades in 6.814 are based on the same quizzes and 
+assigments as 6.830, except that students may opt to do 2 additional labs 
+in place of the final project. For more information about the readings and
+assignments, use the links at the top of the page.
+
+</p>
+
+<div class="change">
+Last change: 8/27/2009.
+</div>
+</div>
+</body>
+</html>

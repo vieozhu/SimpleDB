@@ -1,0 +1,914 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>6.830 Lab 1: SimpleDB (2008 Version)</title>
+<link type="text/css" rel="stylesheet" href="style.css" tppabs="http://db.csail.mit.edu/6.830/style.css">
+<script type="text/javascript" src="sh_main.js" tppabs="http://db.csail.mit.edu/6.830/assignments/shjs/sh_main.js"></script>
+<script type="text/javascript" src="sh_java.js" tppabs="http://db.csail.mit.edu/6.830/assignments/shjs/sh_java.js"></script>
+<link type="text/css" rel="stylesheet" href="sh_ide-eclipse.css" tppabs="http://db.csail.mit.edu/6.830/assignments/shjs/sh_ide-eclipse.css">
+</head>
+
+<body onload="sh_highlightDocument();">
+<h1>6.830 Lab 1: SimpleDB (2008 Version)</h1>
+
+<p> <font color=#FF4444>
+<b> Notice -- This is the 2008 version of the lab description.  Only follow these instructions if
+     you are working with the lab 1 tarball from 2008.
+</b>
+</font>
+</p>
+
+<!--<p><b>Bug Update:</b> We have a <a href="bugs.html">page</a> to keep track
+of SimpleDB bugs that you or we find. Fixes for bugs/annoyances will also be
+posted there. Some bugs may have already been found, so do take a look at the page
+to get the latest version/ patches for the lab code.</p>-->
+
+<p>In the lab assignments in 6.830
+you will write a basic database management system called
+SimpleDB. For this lab, you will focus on implementing the core
+modules required to access stored data on disk; in future labs, you
+will add support for various query processing operators, as well as
+transactions, locking, and concurrent queries.</p>
+
+<p>SimpleDB is written in Java.  We have provided you with a set of
+mostly unimplemented classes and interfaces.  You will need to write the
+code for these classes.  We will grade your code by running a set of system
+tests written using <a href="javascript:if(confirm('http://junit.sourceforge.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://junit.sourceforge.net/'" tppabs="http://junit.sourceforge.net/">JUnit</a>. We have
+also provided a number of unit tests, which we will not use for grading but
+that you may find useful in verifying that your code works.</p>
+
+<p>The remainder of this document describes the basic architecture of SimpleDB,
+gives some suggestions about how to start coding, and discusses how to hand in
+your lab.</p>
+
+<p>We <b>strongly recommend</b> that you start as early as possible on this lab.
+It requires you to write a fair amount of code!</p>
+
+<h2> 0.  Find bugs, be patient, earn candy bars </h2>
+
+<p>SimpleDB is a relatively complex piece of code.
+It is very possible you are going to find bugs, inconsistencies, and bad,
+outdated, or incorrect documentation, etc.</p>
+
+<p>We ask you, therefore, to do this lab with an adventurous mindset.  Don't get
+mad if something is not clear, or even wrong; rather, try to figure it out
+yourself or send us a friendly email.  We promise to help out by posting
+bug fixes, new tarballs, etc., as bugs and issues are reported.
+<!--which you can find <a href="bugs.html">here</a>.</p>-->
+
+<p>...and if you find a bug in our code, we'll give you a candy bar (see <a
+href="#bugs">Section 3.3</a>)!</p>
+
+<h2> 1. Getting started </h2>
+
+<p>These instructions are written for Athena or any other Unix-based
+platform (e.g., Linux, MacOS, etc.)  Because the code is written in
+Java, it should work under Windows as well, though the directions in this
+document may not apply.</p>
+
+We have included <a href="#eclipse">Section 1.2</a> on using the project with Eclipse.
+
+<p>Download the code from
+<code><a href="6.830-lab1.tar-1.gz" tppabs="http://db.csail.mit.edu/6.830/6.830-lab1.tar.gz">http://db.csail.mit.edu/6.830/6.830-lab1.tar.gz</a></code> and untar it.
+For example:</p>
+
+<pre>
+$ wget <a href="6.830-lab1.tar-1.gz" tppabs="http://db.csail.mit.edu/6.830/6.830-lab1.tar.gz">http://db.csail.mit.edu/6.830/6.830-lab1.tar.gz</a>
+$ tar xvzf 6.830-lab1.tar
+$ cd 6.830-lab1
+[on Athena: add sipb]
+[on Athena: add -f java]
+</pre>
+
+<p>SimpleDB uses the <a
+href="javascript:if(confirm('http://ant.apache.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://ant.apache.org/'" tppabs="http://ant.apache.org/">Ant build tool</a> to compile the code and run tests.
+Ant is similar to <a href="javascript:if(confirm('http://www.gnu.org/software/make/manual/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gnu.org/software/make/manual/'" tppabs="http://www.gnu.org/software/make/manual/">make</a>, but
+the build file is written in XML and is somewhat better suited to Java code.
+Most modern Linux distributions include Ant. Under Athena,
+it is included in the <code>sipb</code> locker, which you can
+get to by typing <code>add sipb</code> at the Athena prompt.  Note that
+on some versions of Athena you must also run <code>add -f java</code> to set
+the environment correctly for Java programs. See the
+<a href="javascript:if(confirm('http://web.mit.edu/acs/www/languages.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://web.mit.edu/acs/www/languages.html#Java'" tppabs="http://web.mit.edu/acs/www/languages.html#Java">Athena documentation
+on using Java</a> for more details.</p>
+
+<p>To help you during development, we have provided a set of unit tests in
+addition to the end-to-end tests that we use for grading. These are by no means
+comprehensive, and you should not rely on them exclusively to verify the
+correctness of your project (put those 6.170 skills to use!).</p>
+
+<p>To run the unit tests use the <code>test</code> build target:</p>
+
+<pre>
+$ cd 6.830-lab1
+$ # run all unit tests
+$ ant test
+$ # run a specific unit test
+$ ant runtest -Dtest=TupleTest
+</pre>
+
+You should see output similar to:
+
+<pre>
+# build output...
+
+test:
+    [junit] Running simpledb.CatalogTest
+    [junit] Testsuite: simpledb.CatalogTest
+    [junit] Tests run: 2, Failures: 0, Errors: 2, Time elapsed: 0.037 sec
+    [junit] Tests run: 2, Failures: 0, Errors: 2, Time elapsed: 0.037 sec
+
+# ... stack traces and error reports ...
+</pre>
+
+<p>
+
+The output above indicates that two errors occurred during compilation; this
+is because the code we have given you doesn't yet work.  As you complete
+parts of the lab, you will work towards passing additional unit tests.
+
+If you wish to write new unit tests as you code, they should be added to
+the <tt>test/simpledb</tt> directory.
+
+<p>For more details about how to use Ant,
+see the <a href="javascript:if(confirm('http://ant.apache.org/manual/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://ant.apache.org/manual/'" tppabs="http://ant.apache.org/manual/">manual</a>. The
+<a href="javascript:if(confirm('http://ant.apache.org/manual/running.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://ant.apache.org/manual/running.html'" tppabs="http://ant.apache.org/manual/running.html">Running Ant</a> section
+provides details about using the <code>ant</code> command. However, the quick
+reference table below should be sufficient for working on the labs.</p>
+
+<table class="reference">
+<tr><th>Command</th><th>Description</th></tr>
+<tr><td><tt>ant</tt></td><td>Build the default target (for simpledb, this is dist).</td></tr>
+<tr><td><tt>ant -projecthelp</tt></td><td>List all the targets in <tt>build.xml</tt> with descriptions.</td></tr>
+<tr><td><tt>ant dist</tt></td><td>Compile the code in src and package it in <tt>dist/simpledb.jar</tt>.</td></tr>
+<tr><td><tt>ant test</tt></td><td>Compile and run all the unit tests.</td></tr>
+<tr><td><tt>ant runtest -Dtest=testname</tt></td><td>Run the unit test named <tt>testname</tt>.</td></tr>
+<tr><td><tt>ant systemtest</tt></td><td>Compile and run all the system tests.</td></tr>
+<tr><td><tt>ant runsystest -Dtest=testname</tt></td><td>Compile and run the system test named <tt>testname</tt>.</td></tr>
+</table>
+
+<h3>1.1.  Running end-to-end tests </h3>
+
+<p>
+
+We have also provided a set of end-to-end
+tests that will eventually be used for grading. These tests are structured as
+JUnit tests that live in the <tt>test/simpledb/systemtest</tt> directory. To
+run all the system tests, use the <code>systemtest</code> build target:
+
+<pre>
+$ ant systemtest
+
+# ... build output ...
+
+    [junit] Testcase: testSmall took 0.017 sec
+    [junit] 	Caused an ERROR
+    [junit] expected to find the following tuples:
+    [junit] 	19128
+    [junit] 
+    [junit] java.lang.AssertionError: expected to find the following tuples:
+    [junit] 	19128
+    [junit] 
+    [junit] 	at simpledb.systemtest.SystemTestUtil.matchTuples(SystemTestUtil.java:122)
+    [junit] 	at simpledb.systemtest.SystemTestUtil.matchTuples(SystemTestUtil.java:83)
+    [junit] 	at simpledb.systemtest.SystemTestUtil.matchTuples(SystemTestUtil.java:75)
+    [junit] 	at simpledb.systemtest.ScanTest.validateScan(ScanTest.java:30)
+    [junit] 	at simpledb.systemtest.ScanTest.testSmall(ScanTest.java:40)
+
+# ... more error messages ...
+</pre>
+
+<p>This indicates that this test failed, showing the stack trace where the
+error was detected. To debug, start by reading the source code where the error
+occurred. When the tests pass, you will see something like the following:</p>
+
+<pre>
+$ ant systemtest
+
+# ... build output ...
+
+    [junit] Testsuite: simpledb.systemtest.ScanTest
+    [junit] Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 7.278 sec
+    [junit] Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 7.278 sec
+    [junit] 
+    [junit] Testcase: testSmall took 0.937 sec
+    [junit] Testcase: testLarge took 5.276 sec
+    [junit] Testcase: testRandom took 1.049 sec
+
+BUILD SUCCESSFUL
+Total time: 52 seconds
+</pre>
+
+<h4> 1.1.1 Creating dummy tables </h4>
+
+It is likely you'll want to create your own tests and your own data tables
+to test your own implementation of SimpleDB.  You can create any
+<tt>.txt</tt> file and convert it to a <tt>.dat</tt> file in SimpleDB's
+<code>HeapFile</code> format using the command:
+
+<pre>
+$ java -jar dist/simpledb.jar convert file.txt N
+</pre>
+
+where <tt>file.txt</tt> is the name of the file and <tt>N</tt> is the number
+of columns in the file.  Notice that <tt>file.txt</tt> has to be in the
+following format:
+
+<pre>
+int1,int2,...,intN
+int1,int2,...,intN
+int1,int2,...,intN
+int1,int2,...,intN
+</pre>
+
+<p>...where each intN is a non-negative integer.</p>
+
+<p>To view the contents of a table, use the <code>print</code> command:</p>
+
+<pre>
+$ java -jar dist/simpledb.jar print file.dat N
+</pre>
+
+<p>where <tt>file.dat</tt> is the name of a table created with the
+<tt>convert</tt> command, and <tt>N</tt> is the number of columns in the file.</p>
+
+<a name="eclipse"></a>
+<h3>1.2.  Working in Eclipse </h3>
+<p><a href="javascript:if(confirm('http://www.eclipse.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.eclipse.org/'" tppabs="http://www.eclipse.org/">Eclipse</a> is a graphical software
+development environment that you might be more comfortable with working in.
+The instructions we provide were generated by using Eclipse 3.4.0 (Ganymede)
+for Java Developers (not the enterprise edition) with Java 1.5.0_13 on Ubuntu 
+7.10.  They should also work under Windows or on MacOS. </p>
+
+<p><b>Setting the Lab Up in Eclipse</b></p>
+<ul>
+<li>Once Eclipse is installed, start it, and note that the first screen
+asks you to select a location for your workspace (we will refer
+to this directory as $W).
+<li>On the file system,
+copy 6.830-lab1.tar.gz to $W/6.830-lab1.tar.gz.  Un-GZip and un-tar it,
+which will create a directory $W/6.830-lab1 (to do this, you can type
+<tt>tar -pzxvf 6.830-lab1.tar.gz</tt>).
+<li>With Eclipse running, select File->New->Project->Java->Java Project,
+and push Next.
+<li>Enter "6.830-lab1" as the project name.
+<li>On the same screen that you entered the project name,
+select "Create project from existing source," and browse to $W/6.830-lab1.
+<li>Click finish, and you should be able to see "6.830-lab1" as a new project
+in the Project Explorer tab on the left-hand side of your screen.  Opening this
+project reveals the directory structure discussed above - implementation
+code can be found in "src," and unit tests and system tests found in "test."
+</ul>
+
+<p><b>Running Individual Unit and System Tests</b></p>
+<p>To run a unit test or system test (both are JUnit tests, and can be
+initialized the same way), go to the
+Package Explorer tab on the left side of your screen.  Under the "6.830-lab1"
+project, open the "test" directory.  Unit tests are found in the "simpledb"
+package, and system tests are found in the "simpledb.systemtests" package.
+To run one of these tests, select the test (they are all called *Test.java -
+don't select TestUtil.java or SystemTestUtil.java), right click on it, select "Run As,"
+and select "JUnit Test."  This will bring up a JUnit tab, which will tell you
+the status of the individual tests within the JUnit test suite, and will show you
+exceptions and other errors that will help you debug problems.</p>
+
+<p><b>Running Ant Build Targets</b></p>
+<p>If you want to run commands such as "ant test" or "ant systemtest,"
+right click on build.xml in the Package Explorer.  Select "Run As,"
+and then "Ant Build..." (note: select the option with the ellipsis (...), otherwise
+you won't be presented with a set of build targets to run).  Then,
+in the "Targets" tab of the next screen, check off the targets you want to
+run (probably "dist" and one of "test" or "systemtest").  This should
+run the build targets and show you the results in Eclipse's console window.</p>
+
+<h3> 1.3. Implementation hints </h3>
+
+<p>
+
+Before beginning to write code, we <b>strongly encourage</b> you to read
+through this entire document to get a feel for the high-level design of
+SimpleDB. 
+
+<p>
+
+You will need to fill in any piece of code that is not implemented.  It will
+be obvious where we think you should write code. You may need to add private
+methods and/or helper classes.  You may change APIs, but make sure our <a
+href="#grading">grading</a> tests still run and make sure to mention,
+explain, and defend your decisions in your writeup.
+
+<p>
+
+In addition to the methods that you need to fill out for this lab, 
+the class interfaces contain numerous methods that you need not implement
+until subsequent labs. These will either be indicated per class:
+<pre class="sh_java">
+// Not necessary for lab1.
+public class Insert implements DbIterator {
+</pre>
+or per method:
+<pre class="sh_java">
+public boolean deleteTuple(Tuple t) throws DbException {
+    // some code goes here
+    // not necessary for lab1
+    return false;
+}
+</pre>
+The code that you submit should compile without having to modify these
+methods.
+
+<p>
+
+We suggest exercises along this document to guide your implementation, but
+you may find that a different order makes more sense for you.
+Here's a rough outline of one way you might proceed with your SimpleDB
+implementation:
+
+<ul>
+
+<li> Implement the classes to manage tuples, namely <code>Tuple</code>,
+<code>TupleDesc</code>. We have already implemented <code>Field</code>,
+<code>IntField</code>, <code>StringField</code>, and <code>Type</code>
+for you.  Since you only need to support integer and (fixed length)
+string fields and fixed length tuples, these are straightforward.
+
+<li> Implement the <code>Catalog</code> (this should be very simple).
+
+<li> Implement the <code>BufferPool</code> constructor and the
+<code>getPage()</code> method.
+
+<li> Implement the access methods, <code>HeapPage</code> and
+<code>HeapFile</code> and associated ID classes. A good portion of these files
+has already been written for you.  
+
+<li> Implement the operator <code>SeqScan</code>.
+
+<li> At this point, you should be able to pass the <tt>ScanTest</tt> system
+test, which is the goal for this lab.
+
+<p>
+
+Section 2 below walks you through these implementation steps and the unit tests
+corresponding to each one in more detail.
+
+<!-- TODO(ghuo): lab2
+
+<li> Implement the additional operators:  <code>Join</code>,
+<code>Filter</code>, and <code>Aggregate</code> and verify that the additional
+tests corresponding to these operators work.  Be sure to read the comments in
+the fields for these operators to understand how they should work.
+
+<li> Implement the <code>Insert</code> and <code>Delete</code> operators and
+the methods in <code>BufferPool</code>, <code>HeapFile</code>, and
+<code>HeapPage</code> that support them.  Test to see that the test files for
+inserting and deleting tuples work properly.  Note that SimpleDB does not
+implement any kind of consistency or integrity checking, so it is possible to
+insert duplicate records into a file and there is no way to enforce primary or
+foreign key constraints.
+
+<li> Complete the implementation by adding support for evicting pages from the
+buffer pool.
+-->
+
+</ul>
+
+
+<h3> 1.4. Transactions, locking, and recovery </h3>
+
+As you look through the interfaces we have provided you, you will see a number
+of references to locking, transactions, and recovery.  You do not need to support these features
+in this lab, but you should keep these parameters in the interfaces of
+your code because you will be implementing transactions and locking in
+a future lab. The test code we have provided you with generates
+a fake transaction ID that is passed into the operators of the query it runs;
+you should pass this transaction ID into other operators and the buffer pool.
+
+
+<h2> 2. SimpleDB Architecture and Implementation Guide </h2>
+
+SimpleDB consists of:
+
+<ul>
+
+<li> Classes that represent fields, tuples, and tuple schemas;
+
+<li> Classes that apply predicates and conditions to tuples;
+
+<li> One or more access methods (e.g., heap files) that store relations on
+disk and provide a way to iterate through tuples of those relations; 
+
+<li> A collection of operator classes (e.g., select, join, insert, delete,
+etc.) that process tuples;
+
+<li> A buffer pool that caches active tuples and pages in memory and handles
+concurrency control and transactions (neither of which you need to worry about
+for this lab); and, 
+
+<li> A catalog that stores information about available tables and their
+schemas.
+
+</ul>
+
+<p>
+
+SimpleDB does not include many things that you may think of as being a part of
+a "database."  In particular, SimpleDB does not have:
+
+<ul>
+
+<li> (In this lab), a SQL front end or parser that allows you to type queries
+directly into SimpleDB.  Instead, queries are built up by chaining a
+set of operators together into a hand-built query plan (see <a
+href="#query_walkthrough">Section 2.7</a>).  We will provide a simple parser
+for use in later labs.
+
+<li>Views.
+
+<li>Data types except integers and fixed length strings.
+
+<li>Query optimizer.</li>
+
+<li>Indices.</li>
+
+</ul>
+
+<p>
+
+In the rest of this Section, we describe each of the main components
+of SimpleDB that you will need to implement in this lab.  You should
+use the exercises in this discussion to guide your implementation.
+This document is by no means a complete specification for SimpleDB;
+you will need to make decisions about how to design and implement
+various parts of the system.  Note that for Lab 1 you do not need to
+implement any operators (e.g., select, join, project) except
+sequential scan. You will add support for additional operators in
+future labs.
+
+<p>
+
+You may also wish to consult the <a
+href="index-1.htm" tppabs="http://db.csail.mit.edu/6.830/simpledb/doc">JavaDoc</a> for SimpleDB.
+
+<h3> 2.1. The Database Class </h3>
+
+The Database class provides access to a collection of static objects that are the global state of the database.  In particular, this includes methods to access the catalog (the list of all the tables in the database), the buffer pool (the collection of database file pages that are currently resident in memory), and the log file. You will not need to worry about the log file in this lab. We have implemented the Database class for you.  You should take a look at this file as you will need to access these objects.
+
+<h3> 2.2. Fields and Tuples </h3>
+
+<p>Tuples in SimpleDB are quite basic.  They consist of a collection of
+<code>Field</code> objects, one per field in the <code>Tuple</code>.
+<code>Field</code> is an interface that different data types (e.g.,
+integer, string) implement.  <code>Tuple</code> objects are created by the
+underlying access methods (e.g., heap files, or B-trees), as described in
+the next section.  Tuples also have a type (or schema), called a <i>tuple
+descriptor</i>, represented by a <code>TupleDesc</code> object.  This
+object consists of a collection of <code>Type</code> objects, one per field
+in the tuple, each of which describes the type of the corresponding field.</p>
+
+<div class="exercise"><b>Exercise 1.</b>
+
+  Implement the skeleton methods in:
+  <ul>
+  <li> <tt>src/simpledb/TupleDesc.java</tt>
+  <li> <tt>src/simpledb/Tuple.java</tt>
+  </ul>
+  At this point, your code should pass the unit tests TupleTest and
+  TupleDescTest.
+</div>
+
+<h3> 2.3. Catalog </h3>
+
+The catalog (class <code>Catalog</code> in SimpleDB) consists of a list of the
+tables and schemas of the tables that are currently in the database.  You will
+need to support the ability to add a new table, as well as getting information
+about a particular table.  Associated with each table is
+a <code>TupleDesc</code> object that allows operators to determine the types
+and number of fields in a table.
+
+<p>
+
+The global catalog is a single instance
+of <code>Catalog</code> that is allocated for the entire SimpleDB process.
+The global catalog can be retrieved via the method
+<code>Database.getCatalog()</code>, and the same goes for the
+global buffer pool (using <code>Database.getBufferPool()</code>).
+
+<div class="exercise"><b>Exercise 2.</b>
+
+  Implement the skeleton methods in:
+  <ul>
+  <li> <tt>src/simpledb/Catalog.java</tt>
+  </ul>
+
+  <p>
+
+  At this point, your code should pass the unit tests in CatalogTest.
+</div>
+
+
+
+<h3> 2.4. BufferPool </h3>
+
+<p>The buffer pool (class <code>BufferPool</code> in SimpleDB) is responsible
+for caching pages in memory that have been recently read from disk. All
+operators read and write pages from various files on disk through the buffer
+pool. It consists of a fixed number of pages, defined by the
+<code>numPages</code> parameter to the <code>BufferPool</code> constructor.
+In later labs, you will implement an
+eviction policy. For this lab, you only need to implement the constructor and
+the <code>BufferPool.getPage()</code> method used by the SeqScan operator.
+The BufferPool should store up to <code>numPages</code> pages. For this
+lab, if more than <code>numPages</code> requests are made for different
+pages, then instead of implementing an eviction policy, you may throw a
+DbException. In future labs you will be required to implement an eviction
+policy.</p>
+
+<p>The <code>Database</code> class provides a static method,
+<code>Database.getBufferPool()</code>, that returns a reference to the single
+BufferPool instance for the entire SimpleDB process.</p>
+
+<div class="exercise"><b>Exercise 3.</b>
+
+  Implement the <code>getPage()</code> method in:
+  <ul>
+  <li> <tt>src/simpledb/BufferPool.java</tt>
+  </ul>
+
+  We have not provided unit tests for BufferPool.  The functionality you
+  implemented will be tested in the implementation of HeapFile below.
+  You should use the <code>DbFile.readPage</code>
+  method to access pages of a DbFile.
+</div>
+
+<p>
+
+<!--
+When more than this many pages are in the buffer pool, one page should be
+evicted from the pool before the next is loaded.  The choice of eviction
+policy is up to you; it is not necessary to do something sophisticated.
+-->
+
+<!--
+<p>
+
+Notice that <code>BufferPool</code> asks you to implement
+a <code>flush_all_pages()</code> method.  This is not something you would ever
+need in a real implementation of a buffer pool.  However, we need this method
+for testing purposes.  You really should never call this method from anywhere
+in your code.
+-->
+
+
+
+<h3> 2.5. HeapFile access method </h3>
+
+Access methods provide a way to read or write data from disk that is arranged
+in a specific way.  Common access methods include heap files (unsorted files
+of tuples) and B-trees; for this assignment, you will only implement a heap
+file access method, and we have written some of the code for you.
+
+<p>
+
+A <code>HeapFile</code> object is arranged into a set of pages, each of which
+consists of a fixed number of bytes for storing tuples, (defined by the constant
+<code>BufferPool.PAGE_SIZE</code>), plus a header.  In SimpleDB, there is one
+<code>HeapFile</code> object for each table in the database.  Each page in
+a <code>HeapFile</code> is arranged as a set of slots, each of which can hold
+one tuple (tuples for a given table in SimpleDB are all of the same size).  In
+addition to these slots, each page has a header that consists of a bitmap with
+one bit per tuple slot.  If the bit corresponding to a particular tuple is 1,
+it indicates that the tuple is valid; if it is 0, the tuple is invalid (e.g.,
+has been deleted or was never initialized.)  Pages of <code>HeapFile</code>
+objects are of type <code>HeapPage</code> which implements the
+<code>Page</code> interface.  Pages are stored in the buffer pool but are read
+and written by the <code>HeapFile</code> class.
+
+<p>
+
+SimpleDB stores heap files on disk in more or less the same format they are
+stored in memory.  Each file consists of page data arranged consecutively on
+disk.  Each page consists of one or more 32-bit integers representing the
+header, followed by the <code>BufferPool.PAGE_SIZE</code> bytes of actual page
+content.  The number of 32-bit integers in the header is defined by the
+formula:
+
+<p>
+
+<code>
+    ((BufferPool.PAGE_SIZE / <i>tuple size</i>) / 32 ) +1 )
+</code>
+
+<p>
+
+Where <i>tuple size</i> is the size of a tuple in the page in bytes.  
+
+<p>
+
+The low (least significant) bits of each integer represent the status of the
+slots that are earlier in the file.  Hence, the lowest bit of the first integer
+represents whether or not the first slot in the page is in use.  Also, note
+that the high-order bits of the last such integer may not correspond to a slot
+that is actually in the file, since the number of slots may not be a multiple
+of 32.  Also note that all Java virtual machines are big-endian.
+
+<p>
+
+The page content of each page consists of
+<code>floor(BufferPool.PAGE_SIZE/<i>tuple size</i>)</code> tuple slots, where
+the 0-indexed <i>i</i>th slot begins <code>i * <i>tuple size</i></code> bytes
+into the page.
+
+<div class="exercise"><b>Exercise 4.</b>
+
+  Implement the skeleton methods in:
+  <ul>
+  <li> <tt>src/simpledb/HeapPageId.java</tt>
+  <li> <tt>src/simpledb/RecordID.java</tt>
+  <li> <tt>src/simpledb/HeapPage.java</tt>
+  </ul>
+
+  <p>
+
+  <!-- TODO(ghuo): lab2
+  To implement HeapPage, you will need to modify the header bitmap for
+  methods such as <tt>addTuple()</tt> and <tt>deleteTuple()</tt>.  
+  -->
+  Although you will not use them directly in Lab 1, we ask you to implement
+  getNumEmptySlots() and getSlot() in HeapPage. These require pushing
+  around bits in the page header. You may find it helpful to look at the
+  other methods that have been provided in HeapPage or in
+  <tt>src/simpledb/HeapFileEncoder.java</tt> to understand the layout of pages. 
+  
+  <p>
+
+  You will also need to implement an Iterator over the tuples in the page,
+  which may involve an auxiliary class or data structure.
+
+  <p>
+
+  At this point, your code should pass the unit tests in
+  HeapPageIdTest, RecordIDTest, and HeapPageReadTest.
+</div>
+
+<p> 
+
+After you have implemented <tt>HeapPage</tt>, you will write methods for
+<tt>HeapFile</tt> in this lab to calculate the number of pages in a file
+and to read a page from the file. You will then be able to fetch tuples
+from a file stored on disk.
+
+<div class="exercise"><b>Exercise 5.</b>
+
+  Implement the skeleton methods in:
+  <ul>
+  <li> <tt>src/simpledb/HeapFile.java</tt>
+  </ul>
+
+  <p>
+
+  To read a page from disk, you will first need to calculate the correct
+  offset in the file.  Hint: you will need random access to the file in
+  order to read and write pages at arbitrary offsets.
+  
+  <p> 
+  You will also need to implement the
+  <code>HeapFile.iterator()</code> method, which should iterate
+  through through the tuples of each page in the HeapFile. The iterator must
+  use the <code>BufferPool.getPage()</code> method to access pages in the
+  <code>HeapFile</code>. This method loads the page into
+  the buffer pool and will eventually be used (in a later lab) to
+  implement locking-based concurrency control and recovery.
+
+  <p>
+
+  At this point, your code should pass the unit tests in
+  HeapFileReadTest.
+</div>
+
+<h3> 2.6. Operators </h3>
+
+Operators are responsible for the actual execution of the query plan. They
+implement the operations of the relational algebra.  In SimpleDB, operators
+are iterator based; each operator implements the <code>DbIterator</code>
+interface.
+
+<p>
+
+Operators are connected together into a plan by passing lower-level operators
+into the constructors of higher-level operators, i.e., by 'chaining them
+together.'  Special access method operators at the leaves of the plan are
+responsible for reading data from the disk (and hence do not have any
+operators below them).
+
+<p>
+
+At the top of the plan, the program interacting with SimpleDB simply calls
+<code>getNext</code> on the root operator; this operator then calls
+<code>getNext</code> on its children, and so on, until these leaf operators
+are called.  They fetch tuples from disk and pass them up the tree (as return
+arguments to <code>getNext</code>); tuples propagate up the plan in this way
+until they are output at the root or combined or rejected by another operator
+in the plan.
+
+<p>
+
+<!--
+For plans that implement <code>INSERT</code> and <code>DELETE</code> queries,
+the top-most operator is a special <code>Insert</code> or <code>Delete</code>
+operator that modifies the pages on disk.  These operators return a tuple
+containing the count of the number of affected tuples to the user-level
+program.
+
+<p>
+-->
+
+For this lab, you will only need to implement one SimpleDB
+operator.
+
+<div class="exercise"><a name="ss"><b>Exercise 6.</b></a>
+
+  Implement the skeleton methods in:
+  <ul>
+  <li> <tt>src/simpledb/SeqScan.java</tt>
+  </ul>
+
+  <p>
+  This operator sequentially scans all of the tuples from
+  the pages of the table specified by the <code>tableid</code> in the
+  constructor.  This operator should access tuples through the
+  <code>DbFile.iterator()</code> method.
+	
+  <p>At this point, you should be able to complete the ScanTest system test.
+  Good work!</p>
+</div>
+
+<p>You will fill in other operators in subsequent labs.</p>
+
+<h3><a name="query_walkthrough">2.7. A simple query</a></h3>
+
+<p>The purpose of this section is to illustrate how these various components are
+connected together to process a simple query. The following code implements a
+simple selection query over a data file consisting of three columns of
+integers.  (The file <code>some_data_file.dat</code> is a binary representation
+of the pages from this file). This code is equivalent to the SQL statement
+<code>SELECT * FROM some_data_file</code>.</p>
+
+<pre class="sh_java">
+// construct a 3-column table schema
+Type types[] = new Type[]{ Type.INT_TYPE, Type.INT_TYPE, Type.INT_TYPE };
+String names[] = new String[]{ "field0", "field1", "field2" };
+TupleDesc descriptor = new TupleDesc(types, names);
+
+// create the table, associate it with some_data_file.dat
+// and tell the catalog about the schema of this table.
+HeapFile table1 = new HeapFile(new File("some_data_file.dat"));
+Database.getCatalog().addTable(table1, descriptor);
+
+// construct the query: we use a simple SeqScan, which spoonfeeds
+// tuples via its iterator.
+TransactionId tid = new TransactionId();
+SeqScan f = new SeqScan(tid, table1.id());
+
+// and run it
+f.open();
+while (f.hasNext()) {
+    Tuple tup = f.next();
+    System.out.println(tup);
+}
+f.close();
+
+Database.getBufferPool().transactionComplete(tid);
+</pre>
+
+<p>The table we create has three integer fields.  To express this, we create
+a <code>TupleDesc</code> object and pass it an array of <code>Type</code>
+objects, and optionally an array of <code>String</code> field names. Once we 
+have created this <code>TupleDesc</code>, we initialize
+a <code>HeapFile</code> object representing the table stored in
+<code>some_data_file.dat</code>. Once we have created the table, we add it to
+the catalog. If this were a database server that was already running, we
+would have this catalog information loaded. We need to load it explicitly to
+make this code self-contained.</p>
+
+<p>Once we have finished initializing the database system, we create a query
+plan.  Our plan consists only of the <code>SeqScan</code> operator that
+scans the tuples from disk. In general, these operators are instantiated
+with references to the appropriate table (in the case of <code>SeqScan</code>) or child
+operator (in the case of e.g. Filter). The test program then repeatedly
+calls <code>hasNext</code> and <code>next</code> on the <code>SeqScan</code> operator. As tuples
+are output from the <code>SeqScan</code>, they are printed out on the
+command line.</p>
+
+<h2> 3. Logistics </h2>
+
+You must submit your code (see below) as well as a short (2 pages, maximum)
+writeup describing your approach.  This writeup should:
+
+<ul>
+
+<li> Describe any design decisions you made. These may be minimal for Lab
+1.
+<!-- TODO(ghuo): lab2. including your choice of page eviction policy, page
+layout, etc. -->
+
+<li> Discuss and justify any changes you made to the API.
+
+<li> Describe any missing or incomplete elements of your code.
+
+<li> Describe how long you spent on the lab, and whether there was anything
+you found particularly difficult or confusing.
+
+</ul>
+
+<h3> 3.1. Collaboration </h3>
+
+This lab should be manageable for a single person, but if you prefer
+to work with a partner, this is also OK.  Larger groups are not allowed.
+Please indicate clearly who you worked with, if anyone, on your individual
+writeup.  
+
+<h3> 3.2. Submitting your assignment </h3>
+
+<p>
+
+To submit your code, please create a <tt>6.830-lab1.tar.gz</tt> tarball (such
+that, untarred, it creates a <tt>6.830-lab1/src/simpledb</tt> directory with
+your code) and email it to <a
+href="mailto:6830-submit@nms.csail.mit.edu">6830-submit@nms.csail.mit.edu</a>.
+You may submit your code multiple times; we will use the latest version you
+submit that arrives before the deadline (before 11:59 PM on the due date).  If
+applicable, please indicate your partner in your email.  Please also attach
+your individual writeup as a PDF or text file.
+
+<a name="bugs"></a>
+<h3> 3.3. Submitting a bug </h3>
+
+Please submit (friendly!) bug reports to <a
+href="mailto:6830-bugs@nms.csail.mit.edu">6830-bugs@nms.csail.mit.edu</a>.
+When you do, please try to include:
+
+<ul>
+
+<li>A description of the bug.
+
+<li>A <tt>.java</tt> file we can drop in the
+<code>test/simpledb</code> directory, compile, and run.
+
+<li>A <tt>.txt</tt> file with the data that reproduces the bug.  We should be
+able to convert it to a <tt>.dat</tt> file using <code>HeapFileEncoder</code>.
+
+</ul>
+
+If you are the first person to report a particular bug in the code, we will
+give you a candy bar!
+
+<!--The latest bug reports/fixes can be found <a href="bugs.html">here</a>.-->
+
+<a name="grading"></a>
+<h3> 3.4 Grading </h3>
+
+<p>75% of your grade will be based on whether or not your code passes the
+system test suite we will run over it. These tests will be a superset of the
+tests we have provided. Before handing in your code, you should make sure produces
+no errors (passes all of the tests) from both  <tt>ant test</tt> and <tt>ant systemtest</tt>.</p>
+
+<p><b>Important:</b> before testing, we will replace your <tt>build.xml</tt>
+and the entire contents of the
+<tt>test</tt> directory with our version of these files.  This
+means you cannot change the format of <tt>.dat</tt> files!  You should
+also be careful changing our APIs. You should test that your code compiles
+the unmodified tests. In other words, we will
+untar your tarball, replace the files mentioned above, compile it, and then
+grade it.  It will look roughly like this:
+
+<pre>
+$ tar xvzf 6.830-lab1.tar.gz
+$ cd ./6.830-lab1
+[replace build.xml and test]
+$ ant test
+$ ant systemtest
+[additional tests]
+</pre>
+
+<p>If any of these commands fail, we'll be unhappy, and, therefore, so will your grade.</p>
+
+<p>An additional 25% of your grade will be based on the quality of your
+writeup and our subjective evaluation of your code.</p>
+
+<p>We've had a lot of fun designing this assignment, and we hope you enjoy
+hacking on it!</p>
+
+</body>
+</html>
+
+<!--  LocalWords:  SimpleDB HeapFile dat TupleDesc SeqScan getNext ss tid int
+ -->
+<!--  LocalWords:  NoSuchElementException printStackTrace TransactionId typeAr
+ -->
+<!--  LocalWords:  runTest FilterTest simpledb src java txt JavaDoc's HeapPage
+ -->
+<!--  LocalWords:  BufferPool endian DbIterator JoinPredicate getPage tableid
+ -->
+<!--  LocalWords:  MIN HashMap insertTuple deleteTuple walkthrough PageEncoder
+ -->

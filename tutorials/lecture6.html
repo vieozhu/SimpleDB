@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head><meta http-equiv=Content-Type content='text/html; charset=UTF-8'>
+
+<title>6.830: Lecture 6 (09/29/09)</title>
+<link rel="stylesheet" href="style.css" tppabs="http://db.csail.mit.edu/6.830/style.css" type="text/css" media="screen">
+
+</head>
+<body>
+
+<div style="width: 950px">
+<div class="menubar">
+[
+  <a href="index.htm" tppabs="http://db.csail.mit.edu/6.830/">News</a>
+    |
+  <a href="sched.html" tppabs="http://db.csail.mit.edu/6.830/sched.html">Schedule</a>
+    |
+  <a href="assign.html" tppabs="http://db.csail.mit.edu/6.830/assign.html">Psets/Quizzes/Labs</a>
+    |
+  <a href="notes.html" tppabs="http://db.csail.mit.edu/6.830/notes.html">Class notes</a>
+    | 
+  <a href="syllabus.html" tppabs="http://db.csail.mit.edu/6.830/syllabus.html">Syllabus</a>
+    | 
+  <a href="faq.html" tppabs="http://db.csail.mit.edu/6.830/faq.html">FAQ</a>
+<!-- | <a href="http://groups.google.com/group/6830-2008?hl=en">Discussion Board</a> -->
+]
+</div>
+
+
+
+
+<div class="content">
+
+<h1>6.830: Lecture 6 (09/29/09)</h1>
+
+This lecture will cover various issues related to the physical storage
+of relations on disk, as well as index data structures we might use to
+efficient access those stored relations.
+
+Read the following (short) papers and book sections:
+
+<ul>
+
+<li>In Database Management Systems, read:
+<ul>
+<li> Pages 273-289.  If you are using another book, this is the introduction to the Section on Storage and Indexing which discusses different access methods and their relative performance.
+<li> Pages 344-358.  This is an in-depth discussion of the B+Tree data structure and its implementation.  Most database
+books, as well as any algorithms text (such as CLR or Knuth) will provide an equivalent discussion of B+Trees.
+</ul>
+
+<li> "The R*-Tree: An Efficient and Robust Access Method for Points and Rectangles."  Beckmann et al, in The Red Book.
+
+</ul>
+
+
+
+As you read, think about and come to class prepared to answer the following questions:
+
+<p>
+<ul>
+
+<li> Under what circumstances is a secondary index superior to a
+sequential (in-order) scan of a heap file? Under what circumstances
+would the secondary index scan be preferable?
+
+<li> What is the purpose of the neighbor pointers in a B+Tree?  When are they useful?
+
+<li> Why are B+Trees insufficient for storing and indexing the types
+of data stored by R*-Trees?
+
+
+</ul>
+
+
+<p>
+
+
+<div class="change">
+Last change: 09/25/09.
+</div>
+</div>
+</body>
+</html>

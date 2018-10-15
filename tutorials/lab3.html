@@ -1,0 +1,647 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>  
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>6.830 Lab 3:  SimpleDB Transactions</title>
+<link type="text/css" rel="stylesheet" href="style.css" tppabs="http://db.csail.mit.edu/6.830/style.css">
+</head>
+
+<body>
+<h1>6.830 Lab 3: SimpleDB Transactions</h1>
+
+<b>Assigned: Friday, October 16</b><br>
+<b>Due: Thursday, October 29</b>
+
+<p>
+
+In this lab, you will implement a simple locking-based
+transaction system in SimpleDB.  You will need to add lock and
+unlock calls at the appropriate places in your code, as well as
+code to track the locks held by each transaction and grant
+locks to transactions as they are needed.
+
+<p>
+
+
+
+<p>
+
+The remainder of this document describes what is involved in
+adding transaction support and provides a basic outline of how
+you might add this support to your database.
+
+<p>
+
+As with the previous lab, we recommend that you start as early as possible.
+Locking and transactions can be quite tricky to debug!
+
+<h2> 0.  Find bugs, be patient, earn candybars </h2>
+
+<p>
+
+It is very possible you are going to find bugs, inconsistencies, and
+bad, outdated, or incorrect documentation, etc.  We apologize
+profusely.  We did our best, but, alas, we are fallible human beings.
+
+</p>
+
+<p>
+
+We ask you, therefore, to do this lab with an adventurous mindset.
+Don't get mad if something is not clear, or even wrong; rather, try to figure
+it out yourself or send us a friendly email.  We promise to help out by
+sending bugfixes, new tarballs, etc.
+
+</p>
+
+<p>
+
+...and if you find a bug in our code, we'll give you a candybar (see <a
+href="#bugs">Section 3.3</a>)!
+
+
+<h2> 1. Getting started </h2>
+
+You should begin with the code you submitted for Lab 2 (if you did not
+submit code for Lab 2, or your solution didn't work properly, contact us to
+discuss options.)  We have provided you with extra test cases for this lab
+that are not in the original code distribution you received. We reiterate
+that the unit tests we provide are to help guide your implementation along,
+but they are not intended to be comprehensive or to establish correctness.
+
+<p>
+
+You will need to add these new test cases to your release. The easiest way
+to do this is to untar the new code in the same directory as your top-level
+simpledb directory, as follows:
+
+<ul>
+
+<li>Make a backup of your Lab 2 solution by typing :
+<pre>$ tar -cvzf 6.830-lab2-submitted.tar.gz 6.830-lab2</pre>
+
+<li>Change to the directory that contains your top-level simpledb
+code:
+<pre>
+$ cd 6.830-lab2
+</pre>
+
+<li>
+
+Download the new tests and skeleton code for Lab 3 from <a
+href="6.830-lab3-supplement.tar.gz" tppabs="http://db.csail.mit.edu/6.830/6.830-lab3-supplement.tar.gz">
+http://db.csail.mit.edu/6.830/6.830-lab3-supplement.tar.gz</a>:
+<pre>
+$ wget http://db.csail.mit.edu/6.830/6.830-lab3-supplement.tar.gz
+</pre>
+
+<li>Extract the new files for Lab 3 by typing:
+
+<pre>tar -xvzf 6.830-lab3-supplement.tar.gz</pre>
+
+  This will not overwrite any existing files, but will just add new tests to
+  the <code>test/simpledb</code> and <code>test/simpledb/systemtest</code> directories,
+  as well as adding the new file <code>src/simpledb/Transaction.java</code>.
+
+  
+</ul>
+
+
+<p>
+
+
+<h2> 2. Transactions, Locking, and Concurrency Control </h2>
+
+You do not need to write a great deal of code for this lab,
+but the code you do have to write is quite tricky.  Before starting,
+you should make sure you understand what a transaction is and how
+strict two-phase locking (which you will use to ensure isolation and
+atomicity of your transactions) works.
+<p>
+In the remainder of this section, we briefly overview these concepts 
+and discuss how they relate to SimpleDB.
+
+<h3> 2.1. Transactions </h3>
+
+A transaction is a group of database actions (e.g., inserts, deletes,
+and reads) that are executed <i>atomically</i>; that is, either all of
+the actions complete or none of them do, and it is not apparent to an
+outside observer of the database that these actions were not completed
+as a part of a single, indivisible action.
+
+<h3> 2.2. The ACID Properties </h3>
+
+To help you understand
+ how transaction management works in SimpleDB, we briefly review how
+it  ensures that the ACID properties are satisfied:
+<ul>
+<li><b>Atomicity</b>:  Strict two-phase locking and careful buffer management
+  ensure atomicity.</li>
+<li><b>Consistency</b>:  The database is transaction consistent by virtue of
+  atomicity.  Other consistency issues (e.g., key constraints) are
+  not addressed in SimpleDB.</li>
+<li><b>Isolation</b>: Strict two-phase locking provides isolation.</li>
+<li><b>Durability</b>: A FORCE buffer management policy ensures
+  durability (see Section 2.3 below).</li>
+</ul>
+
+<h3> 2.3. Recovery and Buffer Management </h3>
+
+To simplify your job, we recommend that you implement a NO STEAL/FORCE
+buffer management policy.  
+
+As we discussed in class, this means that:
+<ul>
+<li> You shouldn't evict dirty (updated) pages from the buffer pool if they
+  are locked by an uncommitted transaction (this is NO STEAL).
+<li> On transaction commit, you should force dirty pages to disk (e.g.,
+  write the pages out) (this is FORCE).
+</ul>
+
+To further simplify your life, you may assume that SimpleDB will not crash
+while processing a <code>transactionComplete</code> command.  Note that
+these three points mean that you do not need to implement log-based
+recovery in this lab, since you will never need to undo any work (since you never evict
+dirty pages) and you will never need to redo any work (since you force
+updates on commit and will not crash during commit processing). 
+
+<h3> 2.4. Granting Locks </h3>
+
+You will need to add calls to SimpleDB (in <code>BufferPool</code>,
+for example), that allow a caller to request or release a (shared or
+exclusive) lock on a specific object on behalf of a specific
+transaction.
+
+<p>
+
+We recommend locking at <i>page</i> granularity, though you should be able
+to implement locking at <i>tuple</i> granularity if you wish (please do not
+implement table-level locking). The rest of this document and our unit
+tests assume page-level locking.
+<p>
+
+You will need to create data structures that keep track of which locks
+each transaction holds and that check to see if a lock should be granted
+to a transaction when it is requested.
+<p>
+You will need to implement shared and exclusive locks; recall that these
+work as follows:
+<ul>
+<li> Before a transaction can read an object, it must have a shared lock on it.
+<li> Before a transaction can write an object, it must have an exclusive lock on it.
+<li> Multiple transactions can have a shared lock on an object.
+<li> Only one transaction may have an exclusive lock on an object.
+<li> No transaction
+  may have a shared lock on an object if another transaction has an exclusive lock on it.
+<li> If transaction <i>t</i> is the only transaction holding a lock on
+			      an object <i>o</i>, <i>t</i> may <i>upgrade</i>
+			      its lock on <i>o</i> to a exclusive lock.
+</ul>
+
+<p>
+
+If a transaction requests a lock that it should not be granted, your code
+should <i>block</i>, waiting for that lock to become available (i.e., be
+released by another transaction running in a different thread).
+
+<p>
+
+You need to be especially careful to avoid race conditions when
+writing the code that acquires locks -- think about how you will
+ensure that correct behavior results if two threads request the same
+lock at the same time (you way wish to read about <a
+href="javascript:if(confirm('http://java.sun.com/docs/books/tutorial/essential/concurrency/sync.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://java.sun.com/docs/books/tutorial/essential/concurrency/sync.html'" tppabs="http://java.sun.com/docs/books/tutorial/essential/concurrency/sync.html">
+Synchronizing Threads in Java</a>).
+
+<div class="exercise"><b>Exercise 1.</b>
+
+  Write the methods that acquire and release locks in BufferPool. Assuming
+  you are using page-level locking, you will need to complete the following:
+  <ul>
+  <li> Modify <tt>getPage()</tt> to block and acquire the desired lock
+       before returning a page.
+  <li> Implement <tt>releasePage()</tt>.  This method is primarily used
+    for testing, and at the end of transactions.
+  <li> Implement <tt>holdsLock()</tt> so that logic in Exercise 2 can 
+       determine whether a page is already locked by a transaction.
+  </ul>
+
+  <p>
+  You may find it helpful to define a class that is responsible for
+  maintaining state about transactions and locks, but the design is up to
+  you.
+
+  <p>
+  You may need to implement the next exercise before your code passes 
+  the unit tests in LockingTest.
+</div>
+
+
+<h3> 2.5. Lock Lifetime </h3>
+
+You will need to implement strict two-phase locking.  This means that
+transactions should acquire the appropriate type of lock on any object
+before accessing that object and shouldn't release any locks until after
+the transaction commits.  
+
+<p>
+
+Fortunately, the SimpleDB design is such that is possible obtain locks on
+pages in <code>BufferPool.getPage()</code> before you read or modify them.
+So, rather than adding calls to locking routines in each of your operators,
+we recommend acquiring locks in <code>getPage()</code>. Depending on your
+implementation, it is possible that you may not have to acquire a lock
+anywhere else. It is up to you to verify this!
+
+<p>
+
+You will need to acquire a <i>shared</i> lock on any page (or tuple)
+before you read it, and you will need to acquire an <i>exclusive</i>
+lock on any page (or tuple) before you write it. You will notice that
+we are already passing around <code>Permissions</code> objects in the
+BufferPool; these objects indicate the type of lock that the caller
+would like to have on the object being accessed (we have given you the
+code for the <code>Permissions</code> class.)
+
+<p> Note that your implementation of <code>HeapFile.addTuple()</code>
+and <code>HeapFile.deleteTuple()</code>, as well as the implementation
+of the iterator returned by <code>HeapFile.iterator()</code> should
+access pages using <code>BufferPool.getPage()</code>. Double check
+that that these different uses of <code>getPage()</code> pass the
+correct permissions object (e.g., <code>Permissions.READ_WRITE</code>
+or <code>Permissions.READ_ONLY</code>). You may also wish to double
+check that your implementation of
+<code>BufferPool.insertTuple()</code> and
+<code>BufferPool.deleteTupe()</code> call <code>markDirty()</code> on
+any of the pages they access (you should have done this when you
+implemented this code in lab 2, but we did not test for this case.)
+
+<p>
+
+After you have acquired locks, you will need to think about when to
+release them as well. It is clear that you should release all locks
+associated with a transaction after it has committed or aborted, but it is
+possible for there to be other scenarios in which releasing a lock before
+a transaction ends might be useful.
+
+<p>
+
+<div class="exercise"><b>Exercise 2.</b>
+
+  Ensure that you acquire and release locks throughout SimpleDB. Some (but
+  not necessarily all) actions that you should verify work properly:
+  <ul>
+  <li> Reading tuples off of pages during a SeqScan (if you
+    implemented locking  in <code>BufferPool.getPage()</code>, this should work
+    correctly as long as your <code>HeapFile.iterator()</code> uses
+     <code>getPage()</code>.)
+  <li> Inserting and deleting tuples through BufferPool and HeapFile
+       methods (if you
+    implemented locking in <code>BufferPool.getPage()</code>, this should work
+    correctly as long as <code>HeapFile.addTuple()</code> and
+<code>HeapFile.deleteTuple()</code> uses
+     <code>getPage()</code>.)
+  </ul>
+
+  
+  You will also want to think especially hard about acquiring and releasing
+  locks in the following situations:
+
+  <ul>
+  <li> Adding a new page to a <code>HeapFile</code>.  When do you physically 
+  write the page to disk?  Are there race conditions with other transactions 
+  (on other threads) that might need special attention at the HeapFile level,
+  regardless of page-level locking?
+  <li> Looking for an empty slot into which you can insert tuples.
+  Most implementations scan pages looking for an empty
+  slot, and will need a READ_ONLY lock to do this.  Surprisingly, however,
+    if a transaction <i>t</i> finds no free slot on a page <i>p</i>, <i>t</i> may immediately release the lock on <i>p</i>.
+    Although this apparently contradicts the rules of two-phase locking, it is ok because
+    <i>t</i> did not use any data from the page, such that a concurrent transaction <i>t'</i> which updated
+    <i>p</i> cannot possibly effect the answer or outcome of <i>t</i>. 
+ </ul>
+
+  At this point, your code should pass the unit tests in
+  LockingTest.
+</div>
+
+<h3> 2.6. Implementing NO STEAL </h3>
+
+<p> Modifications from a transaction are written to disk only after it
+commits. This means we can abort a transaction by discarding the dirty
+pages and rereading them from disk. Thus, we must not evict dirty
+pages. This policy is called NO STEAL.
+
+<p> You will need the <tt>flushPage</tt> method <tt>BufferPool</tt>.
+In particular, it must never evict a dirty page. If your eviction policy prefers a dirty page
+for eviction, you will have to find a way to evict an alternative
+page. In the case where all pages in the buffer pool are dirty, you
+should throw a <tt>DbException</tt>.
+
+<p> Note that, in general, evicting a clean page that is locked by a
+running transaction is OK when using NO STEAL, as long as your lock
+manager keeps information about evicted pages around, and as long as
+none of your operator implementations keep references to Page objects
+which have been evicted.
+
+
+<div class="exercise"><b>Exercise 3.</b>
+Implement the necessary logic for page eviction without evicting dirty pages
+in the <tt>evictPage</tt> method in <tt>BufferPool</tt>.
+</div>
+<p>
+
+<h3> 2.7. Transactions </h3>
+
+In SimpleDB, a <code>TransactionId</code> object is created at the
+beginning of each query.  This object is passed to each of the operators
+involved in the query.  When the query is complete, the
+<code>BufferPool</code> method <code>transactionComplete</code> is called.
+
+<p>
+
+Calling this method either <i>commits</i> or <i>aborts</i>  the
+transaction, specified by the parameter flag <code>commit</code>. At any point
+during its execution, an operator may throw a
+<code>TransactionAbortedException</code> exception, which indicates an
+internal error or deadlock has occurred.  The test cases we have provided
+you with create the appropriate <code>TransactionId</code> objects, pass
+them to your operators in the appropriate way, and invoke
+<code>transactionComplete</code> when a query is finished.  We have also
+implemented <code>TransactionId</code>.
+
+<p>
+
+<div class="exercise"><b>Exercise 4.</b>
+
+  Implement the <code>transactionComplete()</code> method in
+  <code>BufferPool</code>. Note that there are two versions of 
+  transactionComplete, one which accepts an additional boolean <b>commit</b> argument,
+  and one which does not.  The version without the additional argument should
+  always commit and so can be implemented by calling  <code>transactionComplete(tid, true)</code>. 
+  
+  <p>
+  
+  When you commit, you should flush dirty pages
+  associated to the transaction to disk. When you abort, you should revert
+  any changes made by the transaction by restoring the page to its on-disk
+  state.
+
+
+  <p>
+
+  Whether the transaction commits or aborts, you should also release any state the
+  BufferPool keeps regarding
+  the transaction, including releasing any locks that the transaction held.
+
+  <p>
+  At this point, your code should pass the TransactionTest unit test and the
+  AbortEvictionTest system test.  You may find the TransactionTest system test
+  illustrative, but it will likely fail until you complete the next exercise.
+</div>
+
+<p>
+
+<!--
+We have provided you with a multithreaded test case, 
+<a href="TransactionTest.java"></a> that
+creates a number of threads, with each thread running a single transaction
+that reads and updates the database.  
+-->
+
+<h3> 2.8. Deadlocks and Aborts</h3>
+
+It is possible for transactions in SimpleDB to deadlock (if you do not
+understand why, we recommend reading about deadlocks in Ramakrishnan & Gehrke).
+You will need to detect this situation and throw a
+<code>TransactionAbortedException</code>. 
+
+<p>
+
+There are many possible ways to detect deadlock. For example, you may
+implement a simple timeout policy that aborts a transaction if it has not
+completed after a given period of time. Alternately, you may implement
+cycle-detection in a dependency graph data structure. In this scheme, you
+would check for cycles in a dependency graph whenever you attempt to grant
+a new lock, and abort something if a cycle exists.
+
+<p>
+
+After you have detected that a deadlock exists, you must decide how to
+improve the situation. Assume you have detected a deadlock while
+transaction <code>t</code> is waiting for a lock.  If you're feeling
+homicidal, you might abort <b>all</b> transactions that <code>t</code> is
+waiting for; this may result in a large amount of work being undone, but
+you can guarantee that <code>t</code> will make progress.
+
+<p>
+
+Alternately, you may decide to abort <code>t</code> to give other
+transactions a chance to make progress. This means that the end-user will have
+to retry transaction <code>t</code>.
+
+<p>
+
+<div class="exercise"><b>Exercise 5.</b>
+
+  Implement deadlock detection and resolution in
+  <code>src/simpledb/BufferPool.java</code>. Most likely, you will want to check
+  for deadlock whenever a transaction attempts to acquire a lock and finds another
+  transaction is holding the lock (note that this by itself is not a deadlock, but may
+  be symptomatic of one.)  You have many design
+  decisions for your deadlock resolution system, but it is not necessary to
+  do something complicated. Please describe your choices in your writeup.
+
+  <p>
+
+  You should ensure that your code aborts transactions properly when a
+  deadlock occurs, by throwing a
+  <code>TransactionAbortedException</code> exception.
+  This exception will be caught by the code executing the transaction
+(e.g., <code>TransactionTest.java</code>), which should call
+<code>transactionComplete()</code> to cleanup after the transaction.
+  You are not expected to automatically restart a transaction which
+  fails due to a deadlock -- you can assume that higher level code
+  will take care of this.
+
+  <p>
+
+  We have provided some (not-so-unit) tests in
+  <code>test/simpledb/DeadlockTest.java</code>. They are actually a
+  bit involved, so they make take more than a few seconds to run (depending
+  on your policy). If they seem to hang indefinitely, then you probably
+  have an unresolved deadlock. These tests construct simple deadlock
+  situations that your code should be able to escape.
+
+  <p>
+
+  Note that there are two timing parameters near the top of
+  <code>DeadLockTest.java</code>; these determine the frequency at which
+  the test checks if locks have been acquired and the waiting time before
+  an aborted transaction is restarted. You may observe different
+  performance characteristics by tweaking these parameters if you use a
+  timeout-based detection method. The tests will output
+  <code>TransactionAbortedExceptions</code> corresponding to resolved
+  deadlocks to the console.
+
+  <p>
+
+  Your code should now should pass the TransactionTest system test (which may also
+  run for quite a long time).
+
+  <p> At this point, you should have a recoverable database, in the
+sense that if the database system crashes (at a point other than
+<code>transactionComplete()</code>) or if the user explicitly aborts a
+transaction, the effects of any running transaction will not be visible
+after the system restarts (or the transaction aborts.) You may wish to
+verify this by running some transactions and explicitly killing the
+database server.
+
+
+</div>
+
+<h3> 2.9. Design alternatives </h3>
+
+During the course of this lab, we have identified three substantial design
+choices that you have to make:
+
+<ul>
+<li> Locking granularity: page-level versus tuple-level
+<li> Deadlock detection: timeouts versus dependency graphs
+<li> Deadlock resolution: aborting yourself versus aborting others
+</ul>
+
+<div class="exercise"><b>Bonus Exercise 6. (10% extra credit)</b>
+
+  For one or more of these choices, implement both alternatives and
+  briefly compare their performance characteristics in your writeup.
+
+  <p>
+
+  You have now completed this lab. 
+  Good work!
+</div>
+
+<h2> 3. Logistics </h2>
+
+You must submit your code (see below) as well as a short (2 pages, maximum)
+writeup describing your approach.  This writeup should:
+
+<ul>
+
+<li> Describe any design decisions you made, including your deadlock detection
+policy, locking granularity, etc.
+
+<li> Discuss and justify any changes you made to the API.
+
+</ul>
+
+<h3> 3.1. Collaboration </h3>
+
+This lab should be manageable for a single person, but if you prefer
+to work with a partner, this is also OK.  Larger groups are not allowed.
+Please indicate clearly who you worked with, if anyone, on your writeup.  
+
+<h3> 3.2. Submitting your assignment </h3>
+
+<p>
+
+To submit your code, please create a <tt>6.830-lab3.tar.gz</tt> tarball (such
+that, untarred, it creates a <tt>6.830-lab3/src/simpledb/</tt> directory with
+your code) and email it to <a
+href="mailto:6830-submit@nms.csail.mit.edu">6830-submit@nms.csail.mit.edu</a>.
+You may submit your code multiple times; we will use the latest version you
+that arrives before the submission deadline (before class on the due date).
+If applicable, please indicate your partner in your email.  Please also attach
+your writeup as a PDF or text file.
+
+<a name="bugs"></a>
+<h3> 3.3. Submitting a bug </h3>
+
+Please submit (friendly!) bug reports to <a
+href="mailto:6830-bugs@nms.csail.mit.edu">6830-bugs@nms.csail.mit.edu</a>.
+When you do, please try to include:
+
+<ul>
+
+<li>A description of the bug.
+
+<li>A <tt>.java</tt> file we can drop in the <code>src/simpledb/test</code>
+directory, compile, and run.
+
+<li>A <tt>.txt</tt> file with the data that reproduces the bug.  We should be
+able to convert it to a <tt>.dat</tt> file using <code>PageEncoder</code>.
+
+</ul>
+
+If you are the first person to report a particular bug in the code, we will
+give you a candy bar!
+
+<a name="grading"></a>
+<h3> 3.4 Grading </h3>
+
+<p>50% of your grade will be based on whether or not your code passes the
+system test suite we will run over it. These tests will be a superset
+of the tests we have provided. Before handing in your code, you should
+make sure produces no errors (passes all of the tests) from both
+<tt>ant test</tt> and <tt>ant systemtest</tt>.</p>
+
+<p>
+
+<b>Important:</b> before testing, we will replace your <tt>build.xml</tt>,
+<tt>HeapFileEncoder.java</tt>, and the entire contents of the
+<tt>test/</tt> directory with our version of these files!  This
+means you cannot change the format of <tt>.dat</tt> files!  You should
+therefore be careful changing our APIs. This also means you need to test
+whether your code compiles with our test programs. In other words, we will
+untar your tarball, replace the files mentioned above, compile it, and then
+grade it. It will look roughly like this:
+
+<pre>
+$ gunzip 6.830-lab3.tar.gz
+$ tar xvf 6.830-lab3.tar
+$ cd 6.830-lab3
+[replace build.xml, HeapFileEncoder.java, and test]
+$ ant test
+$ ant systemtest
+[additional tests]
+</pre>
+
+If any of these commands fail, we'll be unhappy, and, therefore, so will your grade.
+
+<p>
+
+An additional 50% of your grade will be based on the quality of your
+writeup and our subjective evaluation of your code.
+
+<p>
+
+We've had a lot of fun designing this assignment, and we hope you enjoy
+hacking on it!
+
+<!-- Created: Sat Sep 17 12:26:46 EDT 2005 -->
+<!-- hhmts start -->
+Last modified: Mon Sep 29 08:40:00 EDT 2008
+<!-- hhmts end -->
+
+  </body>
+
+
+</html>
+
+<!--  LocalWords:  SimpleDB HeapFile dat TupleDesc SeqScan getNext ss tid int
+ -->
+<!--  LocalWords:  NoSuchElementException printStackTrace TransactionId typeAr
+ -->
+<!--  LocalWords:  runTest FilterTest simpledb src java txt JavaDoc's HeapPage
+ -->
+<!--  LocalWords:  BufferPool endian DbIterator JoinPredicate getPage tableid
+ -->
+<!--  LocalWords:  MIN HashMap insertTuple deleteTuple walkthrough PageEncoder
+ -->
+<!--  LocalWords:  TransactionAbortedException recap Ramakrishnan multithreaded
+ -->
+<!--  LocalWords:  transactionComplete html com href TransactionID untarred
+ -->
+<!--  LocalWords:  TransactionAborted TransactionTest
+ -->

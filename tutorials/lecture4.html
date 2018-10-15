@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head><meta http-equiv=Content-Type content='text/html; charset=UTF-8'>
+
+<title>6.830: Lecture 4 (09/22/09)</title>
+<link rel="stylesheet" href="style.css" tppabs="http://db.csail.mit.edu/6.830/style.css" type="text/css" media="screen">
+
+</head>
+<body>
+
+<div style="width: 950px">
+<div class="menubar">
+[
+  <a href="index.htm" tppabs="http://db.csail.mit.edu/6.830/">News</a>
+    |
+  <a href="sched.html" tppabs="http://db.csail.mit.edu/6.830/sched.html">Schedule</a>
+    |
+  <a href="assign.html" tppabs="http://db.csail.mit.edu/6.830/assign.html">Psets/Quizzes/Labs</a>
+    |
+  <a href="notes.html" tppabs="http://db.csail.mit.edu/6.830/notes.html">Class notes</a>
+    | 
+  <a href="syllabus.html" tppabs="http://db.csail.mit.edu/6.830/syllabus.html">Syllabus</a>
+    | 
+  <a href="faq.html" tppabs="http://db.csail.mit.edu/6.830/faq.html">FAQ</a>
+<!-- | <a href="http://groups.google.com/group/6830-2008?hl=en">Discussion Board</a> -->
+]
+</div>
+
+
+
+
+<div class="content">
+
+<h1>6.830: Lecture 4 (09/22/09)</h1>
+
+We will continue the discussion of schema normalization from last week.  We will then start discussing database system internals, based on he content of two papers.  We will continue discussing these papers during the next lecture (so these are all of the readings for the week!). They are:
+
+<ul>
+<p><li> <a name="anatomy">Joseph Hellerstein and Michael Stonebraker.  <u>The Anatomy of a Database System</u>. In "Readings in Database Systems" (aka "The Red Book").  Focus on Sections 1-4, though you should also read Sections 5.1 and 5.2 and skim Section 6.  
+
+<p><li> <a name="systemr">M.M. Astrahan et al.  <u>System R: Relational Approach to Database Management</u>.  ACM TODS 1(2), 1976. Pages 97-137.   [<a href="javascript:if(confirm('http://portal.acm.org/citation.cfm?id=320457&coll=portal&dl=ACM&CFID=25835612&CFTOKEN=67019220  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://portal.acm.org/citation.cfm?id=320457&coll=portal&dl=ACM&CFID=25835612&CFTOKEN=67019220'" tppabs="http://portal.acm.org/citation.cfm?id=320457&coll=portal&dl=ACM&CFID=25835612&CFTOKEN=67019220">PDF</a>].  Requires an MIT IP for access.  Read up to page 122;  you may also skip the "Optimizer" section, pages 110 - 114.
+</ul>
+
+<p>
+
+The purpose of these readings is to introduce the architecture of a database system at a high level.  Our goal in lecture will be to tease apart the main components of most database systems.  Once we've identified these components, we will discuss each of the over the next few weeks.
+<p>
+
+Both of these papers assume a certain degree of familiarity with database 'lingo', some of which will doubtless be unfamiliar to you.  As you read, keep track of terms you do not know and come to class prepared to ask questions!
+
+<p>
+Also, as you read, think about and come to class prepared to answer the following questions:
+
+<p>
+<ul>
+<li> What is the purpose of the division between RDS and RSS in System R?  
+Is there something fundamental about this design?
+<li> Why are process models in database systems important?  Under what circumstances would
+I want multiple processes in my database? Are there any circumstances in which a "process per query" model
+would be preferable to a "thread per query" model?
+<li> What is the iterator model?  Why is the iterator model convenient?  Can you think of circumstances
+under which the iterator model is a bad idea?
+</ul>
+
+
+<p>
+
+
+<div class="change">
+Last change: 9/17/09.
+</div>
+</div>
+</body>
+</html>

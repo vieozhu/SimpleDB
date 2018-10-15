@@ -1,0 +1,89 @@
+h1 {
+  font-size:24pt;
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size:18pt;
+  font-family: sans-serif;
+}
+
+h3 {
+  font-size:14pt;
+  font-family: sans-serif;
+}
+
+body {
+  text-align: justify;
+  font-family: "Arial", sans-serif;
+}
+
+.logo {
+  float: right;
+  margin-left: 2em;
+}
+
+.menubar {
+  white-space: nowrap;
+  margin-bottom: 0em;
+}
+
+.change {
+  margin-top: 2em;
+  font-size: 80%;
+}
+
+.content {
+  width: 800px;
+}
+
+a:link {
+  color: blue;
+  text-decoration: none;
+}
+
+a:visited {
+  color: blue;
+  text-decoration: none;
+}
+
+a:active {
+  color: red;
+  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Add a border, a maximum width, and indent a bit. */
+pre {
+    margin: 2em;
+    padding: 1em;
+    border: solid thin grey;
+    max-width: 60em;
+}
+
+/* Define exercises as indented and with a background color. */
+.exercise {
+    margin-left: 10%;
+    margin-right: 10%;
+	padding: 0.5em;
+    background-color: #e0e0ff;
+}
+
+/* Center the table. */
+.reference {
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+/* Add some space between the columns */
+.reference td, .reference th {
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+}
+/* Add a line at the bottom of the headings */
+.reference th {
+    border-bottom: solid thin black;
+}

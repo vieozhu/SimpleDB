@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head><meta http-equiv=Content-Type content='text/html; charset=UTF-8'>
+
+    <title>6.830 Final Project Assignment and Ideas</title>
+    <link type="text/css" rel="stylesheet" href="style-1.css" tppabs="http://db.csail.mit.edu/6.830/assignments/style.css">
+
+<style>
+OL LI              { display: list-item; padding: 10px }
+
+</style>
+</head>
+
+  <body>
+    <h1>6.830 Final Project Assignment and Ideas (Fall 2009)</h1>
+
+<b>Important Dates:   <ul>
+<li> 10/15: Project Proposals Due
+<li> 12/10: Project Presentations and Final Reports Due
+</ul>
+</b>
+
+<p>  
+
+A large portion (20%) of your grade in 6.830 consists of a final project.
+This project is meant to be a substantial independent research or
+engineering effort related to material we have studied in class.  Your
+project may involve a comparison of systems we have read about, an
+application of database techniques to a system you are familiar with,
+or be a database-related project in your research area.
+<p>
+This document describes what is expected of a final project and 
+proposes some possible project ideas. 
+
+<h2> What is Expected </h2>
+
+Good class projects can vary dramatically in complexity, scope, and topic.
+The only requirement is that they be related to something we have studied
+in this class and that they contain some element of research -- e.g., that
+you do more than simply engineer a piece of software that someone else
+has described or architected.  To help you determine if your idea is of
+reasonable scope, we will arrange to meet with each group several times
+throughout the semester.
+
+<h3> What to Hand In </h3>
+There are two written deliverables: a project proposal, due on October 15th,
+and a final report, due on December 10th.
+<p>
+<b>Project Proposal</b>: The proposal should consist of 1-2 pages
+describing the problem you plan to solve, outlining how you plan to
+solve it, and describing what you will "deliver" for the final
+project.  We will arrange short meetings with every group before the
+project proposal to help you refine your topic and would be happy to 
+provide feedback on a draft of your proposal before it is due.
+<p>
+
+<b>Final Report</b>: You should prepare a conference-style report on
+your project with maximum length of 15 pages (10 pt font or larger,
+one or two columns, 1 inch margins, single or double spaced -- more is not
+better.)  Your report should introduce and motivate the problem your
+project addresses, describe related work in the area, discuss the
+elements of your solution, and present results that measure the
+behavior, performance, or functionality of your system (with
+comparisons to other related systems as appropriate.)
+<p>
+Because this report is the primary deliverable upon which you will
+be graded, <b>do not treat it as an afterthought</b>.  Plan to leave
+at least a week to do the writing, and make sure your proofread and 
+edit carefully!
+<p>
+Please submit a paper copy of your report in class on Thursday, 12/10.
+You will also be expected to give a presentation on your
+project in class that will provide an opportunity for you to present
+a short demo of your work and show what you have done to other students
+in the class.  Details about the format of the presentation
+will be posted as the date gets closer.
+
+<h2> Project Ideas </h2>
+
+The following is a list of possible project ideas;  you are not
+required to choose from this list -- in fact, we encourage you
+to try to solve a problem of your own choosing!  If you are interested
+in working on one of these projects, contact Professor Madden or Professor Morris and we 
+can put you in touch with students and others around MIT working on these
+ideas.  Note that these are not meant to be complete project proposals, but
+just suggestions for areas to explore -- you will need to flesh them out
+into complete projects by talking with your group members, the course staff,
+and graduate students working on these projects.
+
+<ol>
+
+<li> Access Methods for in-memory databases.The goal of this project
+  is to study the trade-offs of various data representation options
+  for databases in main memory. For example, in the <a
+   href="javascript:if(confirm('http://db.cs.yale.edu/hstore/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://db.cs.yale.edu/hstore/'" tppabs="http://db.cs.yale.edu/hstore/">H-store Project</a> we found
+  that using an array for in-memory tables with "dense" keys is good;
+  one idea for a project would be to characterize the the cases where
+  such arrays are beneficial.  Another would be to study in-memory
+  compression, which might improve cache performance. (Contact Evan
+  Jones for more information.)
+
+  
+  <li> Partition-aware object-relational mapping. Many programmers
+  seem to prefer object-relational mapping (ORM) layers such as like
+  <a href="javascript:if(confirm('http://www.rubyonrails.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.rubyonrails.org/'" tppabs="http://www.rubyonrails.org/">Ruby on Rails</a> or <a
+   href="javascript:if(confirm('http://www.hibernate.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.hibernate.org/'" tppabs="http://www.hibernate.org/">Hibernate</a> to a traditional
+  ODBC/JDBC interface to a database. In the <a
+   href="javascript:if(confirm('http://db.cs.yale.edu/hstore/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://db.cs.yale.edu/hstore/'" tppabs="http://db.cs.yale.edu/hstore/">H-store Project</a> we have
+  been studying performance benefits that can be obtained in a
+  "partitonable" database, where the tables can be cleanly partitioned
+  according to some key attribute (for example,
+  <code>customer-id</code>), and queries are generally run over just
+  one partition.  The goal of this project would be to study how to
+  exploit partitioning to improve the performance of a distributed ORM
+  layer. 
+
+  
+<li> Specialized storage layers.  Design a new database access method optimized for a particular
+type of data.  For example, you could build a SimpleDB or MySQL access
+method that is especially optimized for storing graphs, or for storing
+arrays, and compare its performance the basic access methods we have
+provided.  </li>
+
+<li> Client-side database.  Build a Javascript library that client-side Web applications can
+use to access a database; the idea is to avoid the painful way in
+which current client-side application have to use the <a
+ href="javascript:if(confirm('http://en.wikipedia.org/wiki/XMLHttpRequest  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://en.wikipedia.org/wiki/XMLHttpRequest'" tppabs="http://en.wikipedia.org/wiki/XMLHttpRequest">XMLHttpRequest</a>
+interface to access server-side objects asynchronously.  This layer
+should cache objects on the client side whenever possible, but be
+backed by a shared, server-side database system.
+</li>
+
+<li> As a related project, HTML5 browsers
+(including WebKit, used by Safari and Chrome), include a <a href="javascript:if(confirm('http://webkit.org/blog/126/webkit-does-html5-client-side-database-storage/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://webkit.org/blog/126/webkit-does-html5-client-side-database-storage/'" tppabs="http://webkit.org/blog/126/webkit-does-html5-client-side-database-storage/">client-side SQL API</a> in JavaScript.
+This project would involve investigating how to user such a database to improve client performance, offload work from the server, etc.
+
+</li>
+
+<li> Preventing denial-of-service attacks on database systems.
+Databases are a vulnerable point in many web sites, because it is
+often possible for attackers to make some simple request that causes
+the website to issue queries asking the database to do a lot of work.
+By issuing a large number of such requests, and attacker can
+effectively issue a denial of service attack against the web site by
+disabling the database.  The goal of this project would be to develop 
+a set of techniques to counter
+this problem -- for example, one approach might be to modify the database scheduler
+so that it doesn't run the same expensive queries over and over. </li>
+
+<li> Auto-admin tools to recommend indices, etc.  Design a tool that
+recommends a set of indices to build given a particular workload and a
+set of statistics in a database.  Alternatively investigate the
+question of which materialized views to create in a data-warehousing
+system, such as <ahref="http://db.csail.mit.edu/projects/cstore">C-Store</a>.
+</li>
+
+<li> A related (more theoretical) project is to look at what
+properties of transactions would simplify concurrency control and
+recovery.  The simple example of this is that if all transactions are
+read only, no concurrency control is needed.  But there are a variety
+of other situations -- see <a href="javascript:if(confirm('http://db.csail.mit.edu/pubs/vldb-07-hstore-final.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://db.csail.mit.edu/pubs/vldb-07-hstore-final.pdf'" tppabs="http://db.csail.mit.edu/pubs/vldb-07-hstore-final.pdf"> a
+recent paper from the database group</a> on this topic.  The goal of
+this project would be to think of additional properties and to try to
+deduce algorithms that automatically determine what properties a
+collection of transactions have.
+</li>
+
+<li> Asynchronous Database Access. Client software interacts with
+standard SQL databases via a blocking interface like ODBC or JDBC; the
+client sends SQL, waits for the database to process the query, and
+receives an answer.  A non-blocking interface would allow a single
+client thread to issue many parallel queries from the same thread,
+with potential for some impressive performance gains.  This project
+would investigate how this would work (do the queries have to be in
+different transactions?  what kind of modification would need to be
+made to the database) and would look at the possible performance gains
+in some typical database benchmarks or applications.
+</li>
+
+
+<li> Heuristic Optimizer.  The Selinger Optimizer (see "Access Path Selection in a
+Relational Database Management System" in the Red Book) is notoriously
+bad at making query optimization decisions when there are many joins
+because the statistics it computes over intermediate results are often
+wrong.  Your goal for this project is to devise a scheme for
+evaluating joins that doesn't require such detailed statistics -- for
+example, by partitioning the query plan into several smaller groups of
+joins that can be computed independently, and then using statistics
+collected during the computation of those joins to join the remaining
+intermediate relations.  Of course, this won't be "optimal", but your
+goal should be to show that your scheme avoids making <b>very bad</b>
+decisions and can in-fact outperform Selinger in some situations.
+</li>
+
+<li> Extend SimpleDB.  SimpleDB is very simple.  There are a number of ways you might
+extend it to explore some of the research ideas we have studied in
+this class.  For example, you could add support for optimistic
+concurrency control and compare its performance to the basic
+concurrency control scheme you will implement in Problem Set 3. 
+There are a number of other possible projects of this type; 
+we would be happy to discuss these in more detail.
+</li>
+
+<li> CarTel.  In the <a href="javascript:if(confirm('http://cartel.csail.mit.edu/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://cartel.csail.mit.edu/'" tppabs="http://cartel.csail.mit.edu/">CarTel</a> project,
+we are building a system for collecting and managing data from
+automobiles.  There are several possible CarTel related projects:
+
+<ul>
+
+
+<li> One of the features of CarTel is a GUI for browsing geo-spatial
+data collected from cars.  We currently have a primitive interface
+for retrieving parts of the data that are of interest, but 
+developing a more sophisticated interface or query language
+for browsing and exploring this data would make a great project.
+</li>
+
+<li>  One of the dangers with building a system like CarTel
+is that it collects relatively sensitive personal information
+about users location and driving habits.  Protecting
+this information from casual browsers, insurance companies,
+or other undesired users is important.  However, it is also
+important to be able to combine different users data together
+to do things like intelligent route planning or vehicle
+anomaly detection.  The goal of this project would be to
+find a way to securely perform certain types of aggregate
+queries over CarTel data without exposing personally 
+identifiable information.
+</li>
+
+<li> We have speed and position data from the last year for 30 taxi
+cabs on the Boston streets.  Think of something exciting you could do with 
+this ....
+</li>
+
+</ul>
+</li>
+
+<li>RDF data browser.  Build a tool that visualizes a graph of RDF
+data and allows browsing and / or filtering of it.  This could include
+efforts to deduce partial integrity constraints ("almost every book
+has an author") as well as to generate wide (more relational)
+representations from RDF triples.
+</li>
+
+<li>SPARQL to SQL conversion.  SPARQL is a RDF query language; this
+project would look at converting it to SQL for execution on RDF data
+stored in a relational format (see <a
+href="javascript:if(confirm('http://db.csail.mit.edu/pubs/rdf.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://db.csail.mit.edu/pubs/rdf.pdf'" tppabs="http://db.csail.mit.edu/pubs/rdf.pdf">this paper</a> for a discussion as to
+why storing RDF data in an RDBMS might be beneficial from a
+performance perspective.)  It may be possible to leverage work from the
+open source <a href="javascript:if(confirm('http://jena.sourceforge.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://jena.sourceforge.net/'" tppabs="http://jena.sourceforge.net/">Jena</a> tool for this project.
+</li>
+
+
+<li>Integrity Constraints in Streaming Systems. Current stream data
+processing systems (for example, <a
+href="javascript:if(confirm('http://www.cs.brown.edu/research/borealis/public/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.cs.brown.edu/research/borealis/public/'" tppabs="http://www.cs.brown.edu/research/borealis/public/">Borealis</a>)
+do not provide any way for users to specify constraints on the data
+that they can handle -- for example, a financial analysis application
+might want to verify that no purchases exceed some available
+balance. This project would involve defining what such constraints
+mean, and exploring ways to efficiently check and react to them.  For
+more information, see, for example, StreamClean (<a href="
+javascript:if(confirm('http://www.cs.washington.edu/homes/magda/mobide06.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.cs.washington.edu/homes/magda/mobide06.pdf'" tppabs="http://www.cs.washington.edu/homes/magda/mobide06.pdf">PDF</a>).
+</li>
+
+<li> Use a database to log and recover a file system.  This project would involve
+using a database to implement transactions in a file system.  The idea would be to
+use a user-level file-system package like <a href="javascript:if(confirm('http://fuse.sourceforge.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://fuse.sourceforge.net/'" tppabs="http://fuse.sourceforge.net/">FUSE</a>
+to intercept calls to read and write from the file system, and to log these actions to
+a database to support ideas like transactions and rollback of the file system.
+</li>
+
+<li> Rollback of long-running or committed transactions.  Database systems typically only
+support UNDO of committed transactions, but there are cases where it might be important
+to rollback already committed transactions.
+One approach is to use user-supplied <a href="javascript:if(confirm('http://www.sigmod.org/vldb/conf/1990/P095.PDF  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.sigmod.org/vldb/conf/1990/P095.PDF'" tppabs="http://www.sigmod.org/vldb/conf/1990/P095.PDF">compensating actions</a>,
+but there may be other models that are possible, or it may be possible to automatically derive such
+compensating action for certain classes of transactions.  </li>
+
+<li> Cloud database on Amazon EC2.  <a href="javascript:if(confirm('http://aws.amazon.com/ec2/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://aws.amazon.com/ec2/'" tppabs="http://aws.amazon.com/ec2/">Amazon EC2</a> is a hosted cloud computing
+service.  We have a number of credits available for use of these machines.  One possible project would involve building
+a database system that runs in the cloud, looking at issues such as elasticity (e.g., adding or removing new machines
+on the fly), fault tolerance, and load balancing.</li>
+
+<li> SQL on Hadoop or Hadoop on SQL.  <a href="javascript:if(confirm('http://hadoop.apache.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://hadoop.apache.org/'" tppabs="http://hadoop.apache.org/">Hadoop</a> is an open source implementation of MapReduce.
+Possible projects include using Hadoop to schedule SQL tasks, or extending the SimpleDB execution
+engine to issue Hadoop jobs that run a database query in parallel.</li>
+
+
+</ol>
+
+
+
+
+  </body>
+
+
+</html>
+
+<!--  LocalWords:  SimpleDB HeapFile dat TupleDesc SeqScan getNext ss tid int
+ -->
+<!--  LocalWords:  NoSuchElementException printStackTrace TransactionId typeAr
+ -->
+<!--  LocalWords:  runTest FilterTest simpledb src java txt JavaDoc's HeapPage
+ -->
+<!--  LocalWords:  BufferPool endian DbIterator JoinPredicate getPage tableid
+ -->
+<!--  LocalWords:  MIN HashMap insertTuple deleteTuple walkthrough PageEncoder
+ -->
+<!--  LocalWords:  Selinger architected
+ -->
