@@ -6,6 +6,12 @@ package simpledb;
  * Field objects with the data for each field.
  */
 public class Tuple {
+    private  Field[] fields;  //Field objects
+
+    private TupleDesc tupleDesc;  //TupleDesc object
+
+    private RecordId recordId;  //RecordId
+
 
     /**
      * Create a new tuple with the specified schema (type).
@@ -15,6 +21,10 @@ public class Tuple {
      */
     public Tuple(TupleDesc td) {
         // some code goes here
+        // 构造函数，初始化一个元组
+        this.tupleDesc = td;
+        // 初始化Field数组
+        fields = new Field[td.numFields()];
     }
 
     /**
@@ -22,7 +32,8 @@ public class Tuple {
      */
     public TupleDesc getTupleDesc() {
         // some code goes here
-        return null;
+        // 返回元组的模式tupleDesc
+        return tupleDesc;
     }
 
     /**
@@ -31,7 +42,8 @@ public class Tuple {
      */
     public RecordId getRecordId() {
         // some code goes here
-        return null;
+        // 返回元组的存储位置recordId
+        return recordId;
     }
 
     /**
@@ -40,6 +52,8 @@ public class Tuple {
      */
     public void setRecordId(RecordId rid) {
         // some code goes here
+        // 初始化rid
+        this.recordId = rid;
     }
 
     /**
@@ -48,8 +62,14 @@ public class Tuple {
      * @param i index of the field to change. It must be a valid index.
      * @param f new value for the field.
      */
+
     public void setField(int i, Field f) {
         // some code goes here
+        // 设置第i个元组的内容
+        if(!isValidIndex(i)){
+            throw new IllegalArgumentException("索引越界");
+        }
+        fields[i] = f;
     }
 
     /**
@@ -59,11 +79,20 @@ public class Tuple {
      */
     public Field getField(int i) {
         // some code goes here
-        return null;
+        // 返回第i个fields内容
+        if(!isValidIndex(i)){
+            throw new IllegalArgumentException("索引越界");
+        }
+        return fields[i];
+    }
+
+    private boolean isValidIndex(int index){
+        // 判断fields是否越界,返回值为真
+        return index >=0 && index < fields.length;
     }
 
     /**
-     * Returns the contents of this Tuple as a string.
+     * Returns the contents of this Tuple as a string.返回元组的内容
      * Note that to pass the system tests, the format needs to be as
      * follows:
      *
