@@ -35,22 +35,22 @@ public class CatalogTest extends SimpleDbTestBase {
     /**
      * Unit test for Catalog.getTableId()
      */
-    @Test public void getTableId() {
+    @Test public void getTableId() throws NoSuchFieldException {
         assertEquals(-2, Database.getCatalog().getTableId(name));
         assertEquals(-1, Database.getCatalog().getTableId(""));
         
         try {
             Database.getCatalog().getTableId(null);
             Assert.fail("Should not find table with null name");
-        } catch (NoSuchElementException e) {
-            // Expected to get here
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
         }
-        
+
         try {
             Database.getCatalog().getTableId("foo");
             Assert.fail("Should not find table with name foo");
-        } catch (NoSuchElementException e) {
-            // Expected to get here
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
         }
     }
 

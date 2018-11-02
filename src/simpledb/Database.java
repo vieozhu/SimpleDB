@@ -16,7 +16,7 @@ public class Database {
     private BufferPool _bufferpool; 
 
     private Database() {
-    	_catalog = new Catalog();
+    	_catalog = new Catalog();  //声明实例
     	_bufferpool = new BufferPool(BufferPool.DEFAULT_PAGES);
     }
 

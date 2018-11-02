@@ -10,7 +10,11 @@ import java.io.*;
  * file has a unique id used to store metadata about the table in the Catalog.
  * DbFiles are generally accessed through the buffer pool, rather than directly
  * by operators.
+ *
+ * table由DBFile组成，dbfile可以获取页面并遍历元组，每个file有一个惟一的id用于在目录中存储关于表的元数据
+ * DbFile有id号、访问页、删除元组、getTupleDesc
  */
+
 public interface DbFile {
     /**
      * Read the specified page from disk.
@@ -79,6 +83,8 @@ public interface DbFile {
      * @return an ID uniquely identifying this HeapFile.
      */
     public int getId();
+    // Returns a unique ID used to identify this DbFile in the Catalog
+
     
     /**
      * Returns the TupleDesc of the table stored in this DbFile.

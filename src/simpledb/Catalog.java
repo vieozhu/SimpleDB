@@ -1,5 +1,7 @@
 package simpledb;
 
+import sun.security.krb5.internal.rcache.DflCache;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -20,8 +22,36 @@ public class Catalog {
      * Constructor.
      * Creates a new, empty catalog.
      */
+    // HashMap是key与value的映射，put和get方法,
+    private HashMap<String, Table> nameToTable;  // 根据名字找表
+    private HashMap<Integer, Table> idToTable;  // 根据id找表
+    private HashMap<Integer, DbFile> idToFile;  // 根据id找file
+    private HashMap<Integer, String> idToName;  // 根据id找name
+    private HashMap<String, Integer> nameToId;  // 根据name找id
+
     public Catalog() {
         // some code goes here
+        // 构造函数，实现两个table标记变量
+        nameToTable = new HashMap<String, Table>();
+        idToTable = new HashMap<Integer, Table>();
+        idToFile = new HashMap<Integer, DbFile>();
+        idToName = new HashMap<Integer, String>();
+        nameToId = new HashMap<String, Integer>();
+
+    }
+
+    public class Table{
+        // 创建table结构
+        DbFile file;
+        String name;
+        String pkeyField;
+
+        public Table(DbFile f, String s, String pkey){
+            this.file = f;
+            this.name = s;
+            this.pkeyField = pkey;
+
+        }
     }
 
     /**
@@ -32,8 +62,38 @@ public class Catalog {
      * @param name the name of the table -- may be an empty string.  May not be null.  If a name
      * conflict exists, use the last table to be added as the table for a given name.
      */
-    public void addTable(DbFile file, String name) {
+    public void addTable(DbFile file, String name, String pkey) {
         // some code goes here
+        // pkey the name of the primary key field
+        /**
+         * 将file添加进name(table名字)中
+         * table name 不为空，冲突时用最新的表作为操作对象
+         */
+        if(name == null || pkey == null){
+            throw new IllegalArgumentException();
+        }
+
+        if(nameToId.containsKey(name)){
+            throw new UnsupportedOperationException("不支持重名");
+        }
+
+        Table _table = new Table(file, name, pkey);
+        int tableId = file.getId();
+        // 映射赋值
+        nameToTable.put(name, _table);
+        idToTable.put(file.getId(), _table);
+        idToName.put(tableId, name);
+        idToFile.put(tableId, file);
+        nameToId.put(name, tableId);
+    }
+
+    public void addTable(DbFile file, String name){
+        // 多态
+        if(name == null){
+            throw new IllegalArgumentException();
+        }
+
+        addTable(file, name, "");
     }
 
     /**
@@ -52,9 +112,12 @@ public class Catalog {
      * Return the id of the table with a specified name,
      * @throws NoSuchElementException if the table doesn't exist
      */
-    public int getTableId(String name) {
+    public int getTableId(String name) throws NoSuchFieldException {
         // some code goes here
-        return 0;
+        if(name == null || !nameToId.containsKey(name)){
+            throw new NoSuchFieldException();
+        }
+        return nameToId.get(name);  // 根据name查找id
     }
 
     /**
@@ -64,7 +127,10 @@ public class Catalog {
      */
     public TupleDesc getTupleDesc(int tableid) throws NoSuchElementException {
         // some code goes here
-        return null;
+        if(!isIdValid(tableid, idToFile)){
+            throw new NoSuchElementException();
+        }
+        return idToFile.get(tableid).getTupleDesc();
     }
 
     /**
@@ -75,12 +141,28 @@ public class Catalog {
      */
     public DbFile getDbFile(int tableid) throws NoSuchElementException {
         // some code goes here
-        return null;
+        if(!isIdValid(tableid, idToTable)){
+            throw new NoSuchElementException();
+        }
+        return idToFile.get(tableid);
+
     }
+
+    private boolean isIdValid(int tableId, HashMap<?, ?> map){
+        // 检查该key是否存在
+        return map.containsKey(tableId);
+    }
+
+
 
     /** Delete all tables from the catalog */
     public void clear() {
         // some code goes here
+        idToTable.clear();
+        nameToTable.clear();
+        idToFile.clear();
+        idToName.clear();
+        nameToId.clear();
     }
     
     /**
