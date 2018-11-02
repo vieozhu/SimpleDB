@@ -40,13 +40,13 @@ public class Catalog {
 
     }
 
-    public class Table{
+    public class Table {
         // 创建table结构
         DbFile file;
         String name;
         String pkeyField;
 
-        public Table(DbFile f, String s, String pkey){
+        public Table(DbFile f, String s, String pkey) {
             this.file = f;
             this.name = s;
             this.pkeyField = pkey;
@@ -57,10 +57,11 @@ public class Catalog {
     /**
      * Add a new table to the catalog.
      * This table's contents are stored in the specified DbFile.
+     *
      * @param file the contents of the table to add;  file.getId() is the identfier of
-     *    this file/tupledesc param for the calls getTupleDesc and getFile
+     *             this file/tupledesc param for the calls getTupleDesc and getFile
      * @param name the name of the table -- may be an empty string.  May not be null.  If a name
-     * conflict exists, use the last table to be added as the table for a given name.
+     *             conflict exists, use the last table to be added as the table for a given name.
      */
     public void addTable(DbFile file, String name, String pkey) {
         // some code goes here
@@ -69,11 +70,11 @@ public class Catalog {
          * 将file添加进name(table名字)中
          * table name 不为空，冲突时用最新的表作为操作对象
          */
-        if(name == null || pkey == null){
+        if (name == null || pkey == null) {
             throw new IllegalArgumentException();
         }
 
-        if(nameToId.containsKey(name)){
+        if (nameToId.containsKey(name)) {
             throw new UnsupportedOperationException("不支持重名");
         }
 
@@ -87,9 +88,9 @@ public class Catalog {
         nameToId.put(name, tableId);
     }
 
-    public void addTable(DbFile file, String name){
+    public void addTable(DbFile file, String name) {
         // 多态
-        if(name == null){
+        if (name == null) {
             throw new IllegalArgumentException();
         }
 
@@ -110,11 +111,12 @@ public class Catalog {
 
     /**
      * Return the id of the table with a specified name,
+     *
      * @throws NoSuchElementException if the table doesn't exist
      */
     public int getTableId(String name) throws NoSuchFieldException {
         // some code goes here
-        if(name == null || !nameToId.containsKey(name)){
+        if (name == null || !nameToId.containsKey(name)) {
             throw new NoSuchFieldException();
         }
         return nameToId.get(name);  // 根据name查找id
@@ -122,12 +124,13 @@ public class Catalog {
 
     /**
      * Returns the tuple descriptor (schema) of the specified table
+     *
      * @param tableid The id of the table, as specified by the DbFile.getId()
-     *     function passed to addTable
+     *                function passed to addTable
      */
     public TupleDesc getTupleDesc(int tableid) throws NoSuchElementException {
         // some code goes here
-        if(!isIdValid(tableid, idToFile)){
+        if (!isIdValid(tableid, idToFile)) {
             throw new NoSuchElementException();
         }
         return idToFile.get(tableid).getTupleDesc();
@@ -136,26 +139,28 @@ public class Catalog {
     /**
      * Returns the DbFile that can be used to read the contents of the
      * specified table.
+     *
      * @param tableid The id of the table, as specified by the DbFile.getId()
-     *     function passed to addTable
+     *                function passed to addTable
      */
     public DbFile getDbFile(int tableid) throws NoSuchElementException {
         // some code goes here
-        if(!isIdValid(tableid, idToTable)){
+        if (!isIdValid(tableid, idToTable)) {
             throw new NoSuchElementException();
         }
         return idToFile.get(tableid);
 
     }
 
-    private boolean isIdValid(int tableId, HashMap<?, ?> map){
+    private boolean isIdValid(int tableId, HashMap<?, ?> map) {
         // 检查该key是否存在
         return map.containsKey(tableId);
     }
 
 
-
-    /** Delete all tables from the catalog */
+    /**
+     * Delete all tables from the catalog
+     */
     public void clear() {
         // some code goes here
         idToTable.clear();
@@ -164,9 +169,10 @@ public class Catalog {
         idToName.clear();
         nameToId.clear();
     }
-    
+
     /**
      * Reads the schema from a file and creates the appropriate tables in the database.
+     *
      * @param catalogFile
      */
     public void loadSchema(String catalogFile) {
@@ -198,14 +204,14 @@ public class Catalog {
                 String[] namesAr = names.toArray(new String[0]);
                 TupleDesc t = new TupleDesc(typeAr, namesAr);
                 HeapFile tabHf = new HeapFile(new File(name + ".dat"), t);
-                addTable(tabHf,name);
+                addTable(tabHf, name);
                 System.out.println("Added table : " + name + " with schema " + t);
             }
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(0);
         } catch (IndexOutOfBoundsException e) {
-            System.out.println ("Invalid catalog entry : " + line);
+            System.out.println("Invalid catalog entry : " + line);
             System.exit(0);
         }
     }

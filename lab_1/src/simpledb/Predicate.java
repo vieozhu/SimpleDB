@@ -1,10 +1,13 @@
 package simpledb;
 
-/** Predicate compares tuples to a specified Field value.
+/**
+ * Predicate compares tuples to a specified Field value.
  */
 public class Predicate {
 
-    /** Constants used for return codes in Field.compare */
+    /**
+     * Constants used for return codes in Field.compare
+     */
     public enum Op {
         EQUALS, GREATER_THAN, LESS_THAN, LESS_THAN_OR_EQ, GREATER_THAN_OR_EQ, LIKE;
 
@@ -32,8 +35,8 @@ public class Predicate {
     /**
      * Constructor.
      *
-     * @param field field number of passed in tuples to compare against.
-     * @param op operation to use for comparison
+     * @param field   field number of passed in tuples to compare against.
+     * @param op      operation to use for comparison
      * @param operand field value to compare passed in tuples to
      */
     public Predicate(int field, Op op, Field operand) {

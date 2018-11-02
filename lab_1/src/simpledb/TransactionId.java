@@ -18,7 +18,7 @@ public class TransactionId {
     }
 
     public boolean equals(Object tid) {
-        return ((TransactionId)tid).myid == myid;
+        return ((TransactionId) tid).myid == myid;
     }
 
     public int hashCode() {

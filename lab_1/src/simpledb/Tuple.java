@@ -6,7 +6,7 @@ package simpledb;
  * Field objects with the data for each field.
  */
 public class Tuple {
-    private  Field[] fields;  //Field objects
+    private Field[] fields;  //Field objects
 
     private TupleDesc tupleDesc;  //TupleDesc object
 
@@ -17,7 +17,7 @@ public class Tuple {
      * Create a new tuple with the specified schema (type).
      *
      * @param td the schema of this tuple. It must be a valid TupleDesc
-     * instance with at least one field.
+     *           instance with at least one field.
      */
     public Tuple(TupleDesc td) {
         // some code goes here
@@ -38,7 +38,7 @@ public class Tuple {
 
     /**
      * @return The RecordId representing the location of this tuple on
-     *   disk. May be null.
+     * disk. May be null.
      */
     public RecordId getRecordId() {
         // some code goes here
@@ -48,6 +48,7 @@ public class Tuple {
 
     /**
      * Set the RecordId information for this tuple.
+     *
      * @param rid the new RecordId for this tuple.
      */
     public void setRecordId(RecordId rid) {
@@ -66,38 +67,37 @@ public class Tuple {
     public void setField(int i, Field f) {
         // some code goes here
         // 设置第i个元组的内容
-        if(!isValidIndex(i)){
+        if (!isValidIndex(i)) {
             throw new IllegalArgumentException("索引越界");
         }
         fields[i] = f;
     }
 
     /**
-     * @return the value of the ith field, or null if it has not been set.
-     *
      * @param i field index to return. Must be a valid index.
+     * @return the value of the ith field, or null if it has not been set.
      */
     public Field getField(int i) {
         // some code goes here
         // 返回第i个fields内容
-        if(!isValidIndex(i)){
+        if (!isValidIndex(i)) {
             throw new IllegalArgumentException("索引越界");
         }
         return fields[i];
     }
 
-    private boolean isValidIndex(int index){
+    private boolean isValidIndex(int index) {
         // 判断fields是否越界,返回值为真
-        return index >=0 && index < fields.length;
+        return index >= 0 && index < fields.length;
     }
 
     /**
      * Returns the contents of this Tuple as a string.返回元组的内容
      * Note that to pass the system tests, the format needs to be as
      * follows:
-     *
+     * <p>
      * column1\tcolumn2\tcolumn3\t...\tcolumnN\n
-     *
+     * <p>
      * where \t is any whitespace, except newline, and \n is a newline
      */
     public String toString() {

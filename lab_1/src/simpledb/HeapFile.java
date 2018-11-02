@@ -10,8 +10,8 @@ import java.util.*;
  * pages. HeapFile works closely with HeapPage.  The format of HeapPages
  * is described in the HeapPage constructor.
  *
- * @see simpledb.HeapPage#HeapPage
  * @author Sam Madden
+ * @see simpledb.HeapPage#HeapPage
  */
 public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实现
 
@@ -35,26 +35,27 @@ public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实�
     }
 
     /**
-    * Returns an ID uniquely identifying this HeapFile. Implementation note:
-    * you will need to generate this tableid somewhere ensure that each
-    * HeapFile has a "unique id," and that you always return the same value
-    * for a particular HeapFile. We suggest hashing the absolute file name of
-    * the file underlying the heapfile, i.e. f.getAbsoluteFile().hashCode().
-    *
-    * @return an ID uniquely identifying this HeapFile.
-    */
+     * Returns an ID uniquely identifying this HeapFile. Implementation note:
+     * you will need to generate this tableid somewhere ensure that each
+     * HeapFile has a "unique id," and that you always return the same value
+     * for a particular HeapFile. We suggest hashing the absolute file name of
+     * the file underlying the heapfile, i.e. f.getAbsoluteFile().hashCode().
+     *
+     * @return an ID uniquely identifying this HeapFile.
+     */
     public int getId() {
         // some code goes here
         throw new UnsupportedOperationException("implement this");
     }
-    
+
     /**
      * Returns the TupleDesc of the table stored in this DbFile.
+     *
      * @return TupleDesc of this DbFile.
      */
     public TupleDesc getTupleDesc() {
-    	// some code goes here
-    	throw new UnsupportedOperationException("implement this");
+        // some code goes here
+        throw new UnsupportedOperationException("implement this");
     }
 
     // see DbFile.java for javadocs
@@ -79,7 +80,7 @@ public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实�
 
     // see DbFile.java for javadocs
     public ArrayList<Page> addTuple(TransactionId tid, Tuple t)
-        throws DbException, IOException, TransactionAbortedException {
+            throws DbException, IOException, TransactionAbortedException {
         // some code goes here
         return null;
         // not necessary for lab1
@@ -87,7 +88,7 @@ public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实�
 
     // see DbFile.java for javadocs
     public Page deleteTuple(TransactionId tid, Tuple t)
-        throws DbException, TransactionAbortedException {
+            throws DbException, TransactionAbortedException {
         // some code goes here
         return null;
         // not necessary for lab1
@@ -98,6 +99,6 @@ public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实�
         // some code goes here
         return null;
     }
-    
+
 }
 

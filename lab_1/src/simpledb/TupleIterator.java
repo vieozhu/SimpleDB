@@ -12,6 +12,7 @@ public class TupleIterator implements DbIterator {
 
     /**
      * Constructs an iterator from the specified Iterable, and the specified descriptor.
+     *
      * @param tuples The set of tuples to iterate over
      */
     public TupleIterator(TupleDesc td, Iterable<Tuple> tuples) {
@@ -20,7 +21,7 @@ public class TupleIterator implements DbIterator {
 
         // check that all tuples are the right TupleDesc
         for (Tuple t : tuples) {
-            if(!t.getTupleDesc().equals(td))
+            if (!t.getTupleDesc().equals(td))
                 throw new IllegalArgumentException("incompatible tuple in tuple set");
         }
     }

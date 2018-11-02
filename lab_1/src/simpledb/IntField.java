@@ -49,23 +49,23 @@ public class IntField implements Field {
         IntField iVal = (IntField) val;
 
         switch (op) {
-        case EQUALS:
-            return value == iVal.value;
+            case EQUALS:
+                return value == iVal.value;
 
-        case GREATER_THAN:
-            return value > iVal.value;
+            case GREATER_THAN:
+                return value > iVal.value;
 
-        case GREATER_THAN_OR_EQ:
-            return value >= iVal.value;
+            case GREATER_THAN_OR_EQ:
+                return value >= iVal.value;
 
-        case LESS_THAN:
-            return value < iVal.value;
+            case LESS_THAN:
+                return value < iVal.value;
 
-        case LESS_THAN_OR_EQ:
-            return value <= iVal.value;
+            case LESS_THAN_OR_EQ:
+                return value <= iVal.value;
 
-    case LIKE:
-        return value == iVal.value;
+            case LIKE:
+                return value == iVal.value;
         }
 
         return false;
@@ -73,9 +73,10 @@ public class IntField implements Field {
 
     /**
      * Return the Type of this field.
+     *
      * @return Type.INT_TYPE
      */
-	public Type getType() {
-		return Type.INT_TYPE;
-	}
+    public Type getType() {
+        return Type.INT_TYPE;
+    }
 }

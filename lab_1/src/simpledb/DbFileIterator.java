@@ -1,4 +1,5 @@
 package simpledb;
+
 import java.util.*;
 
 /**
@@ -8,14 +9,17 @@ import java.util.*;
 public interface DbFileIterator {
     /**
      * Opens the iterator
+     *
      * @throws DbException when there are problems opening/accessing the database.
      */
     public void open()
-        throws DbException, TransactionAbortedException;
+            throws DbException, TransactionAbortedException;
 
-    /** @return true if there are more tuples available. */
+    /**
+     * @return true if there are more tuples available.
+     */
     public boolean hasNext()
-        throws DbException, TransactionAbortedException;
+            throws DbException, TransactionAbortedException;
 
     /**
      * Gets the next tuple from the operator (typically implementing by reading
@@ -25,10 +29,11 @@ public interface DbFileIterator {
      * @throws NoSuchElementException if there are no more tuples
      */
     public Tuple next()
-        throws DbException, TransactionAbortedException, NoSuchElementException;
+            throws DbException, TransactionAbortedException, NoSuchElementException;
 
     /**
      * Resets the iterator to the start.
+     *
      * @throws DbException When rewind is unsupported.
      */
     public void rewind() throws DbException, TransactionAbortedException;
