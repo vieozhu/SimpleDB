@@ -1,6 +1,7 @@
 package simpledb;
 
 import java.io.*;
+import java.util.HashMap;
 
 /**
  * BufferPool manages the reading and writing of pages into memory from
@@ -20,6 +21,12 @@ public class BufferPool {
     constructor instead. */
     public static final int DEFAULT_PAGES = 50;
 
+    // numPages maximum number of pages in this buffer pool.
+    public final int PAGES_NUM;
+
+    // PageId到page的映射
+    private HashMap<PageId, Page> idToPage;
+
     /**
      * Creates a BufferPool that caches up to numPages pages.
      *
@@ -27,6 +34,9 @@ public class BufferPool {
      */
     public BufferPool(int numPages) {
         // some code goes here
+
+        PAGES_NUM = numPages;
+        idToPage = new HashMap<PageId, Page>(PAGES_NUM);  // hash数组的大小是PAGES_NUM
 
     }
 
@@ -42,13 +52,23 @@ public class BufferPool {
      * should be added in its place.
      *
      * @param tid the ID of the transaction requesting the page
-     * @param pid the ID of the requested page
+     * @param pid the ID of the requested page,PageId是到特定表的特定页面的接口
      * @param perm the requested permissions on the page
      */
     public synchronized Page getPage(TransactionId tid, PageId pid, Permissions perm)
         throws TransactionAbortedException, DbException {
         // some code goes here
-        return null;
+        // 根据id返回具体的页，if it is present, it should be returned.
+        if(idToPage.containsKey(pid)){
+            return idToPage.get(pid);
+        }else {
+            // If it is not present, it should be added to the buffer pool and returned.
+            // 找不到页则新建一个页
+            Page newPage = Database.getCatalog().getDbFile(pid.getTableId()).readPage(pid);
+            idToPage.put(pid, newPage);  // 创建新表并添加进映射中
+
+            return newPage;
+        }
     }
 
     /**

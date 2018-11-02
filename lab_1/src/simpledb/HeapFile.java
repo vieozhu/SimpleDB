@@ -13,7 +13,7 @@ import java.util.*;
  * @see simpledb.HeapPage#HeapPage
  * @author Sam Madden
  */
-public class HeapFile implements DbFile {
+public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实现
 
     /**
      * Constructs a heap file backed by the specified file.
