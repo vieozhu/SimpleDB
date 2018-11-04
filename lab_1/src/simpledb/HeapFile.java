@@ -138,6 +138,7 @@ public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实�
     }
 
     // see DbFile.java for javadocs
+    // 迭代器都是继承DbFileIterator接口
     public DbFileIterator iterator(TransactionId tid) {
         // some code goes here
         // HeapFileIterator 继承DbFileIterator
@@ -194,9 +195,15 @@ public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实�
             // if there are more tuples available.
             if (tuplesInPage.hasNext()) {
                 return true;  // iterator迭代器的hasNext()方法
-            } else {
-                return false;
-            }
+            }else return false;
+
+            /*if (pagePos < numPages() - 1) {
+                pagePos++;
+                HeapPageId pid = new HeapPageId(getId(), pagePos);
+                tuplesInPage = getTuplesInPage(pid);
+                //这时不能直接return ture，有可能返回的新的迭代器是不含有tuple的
+                return tuplesInPage.hasNext();
+            } else return false;*/
 
         }
 

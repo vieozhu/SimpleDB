@@ -122,6 +122,11 @@ public class Catalog {
         return nameToId.get(name);  // 根据name查找id
     }
 
+    public String getTableName(int id){
+        // 根据id返回name
+        return idToName.get(id);
+    }
+
     /**
      * Returns the tuple descriptor (schema) of the specified table
      *
@@ -148,6 +153,9 @@ public class Catalog {
         if (!isIdValid(tableid, idToTable)) {
             throw new NoSuchElementException();
         }
+
+        // read the contents of the specified table.读取特定表的内容
+        // 返回文件DbFile，包含对页的操作
         return idToFile.get(tableid);
 
     }

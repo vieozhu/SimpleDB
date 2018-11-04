@@ -175,6 +175,7 @@ public class TupleDesc {
      */
     public Type getType(int i) throws NoSuchElementException {
         // some code goes here
+        // Gets the type of the ith field of this TupleDesc.
         if (i < 0 || i >= numFields()) {
             throw new NoSuchElementException("无效索引");
         }

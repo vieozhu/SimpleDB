@@ -102,6 +102,16 @@ public class Tuple {
      */
     public String toString() {
         // some code goes here
-        throw new UnsupportedOperationException("Implement this");
+        //throw new UnsupportedOperationException("Implement this");
+        StringBuffer rowString = new StringBuffer();
+        for (int i = 0; i < fields.length; i++) {
+            if (i == fields.length - 1) {
+                //如果是最后一个Field，就接换行符，否则接空格
+                rowString.append(fields[i].toString() + "\n");
+            } else {
+                rowString.append(fields[i].toString() + "\t");
+            }
+        }
+        return rowString.toString();
     }
 }

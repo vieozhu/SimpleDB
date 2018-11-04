@@ -52,7 +52,7 @@ public interface DbFile {
 
     /**
      * Removes the specifed tuple from the file on behalf of the specified
-     * transaction.
+     * transaction.代表指定的事务从文件中删除指定的元组
      * This method will acquire a lock on the affected pages of the file, and
      * may block until the lock can be acquired.
      *
