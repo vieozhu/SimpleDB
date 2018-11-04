@@ -10,6 +10,9 @@ import java.io.*;
  * file has a unique id used to store metadata about the table in the Catalog.
  * DbFiles are generally accessed through the buffer pool, rather than directly
  * by operators.
+ * 磁盘上数据库文件的接口。每个表由一个DbFile表示。
+ * dbfile可以获取页面并遍历元组。每个文件都有一个惟一的id，用于在目录中存储关于表的元数据。
+ * dbfile通常通过缓冲池访问，而不是由操作人员直接访问。
  * <p>
  * table由DBFile组成，dbfile可以获取页面并遍历元组，每个file有一个惟一的id用于在目录中存储关于表的元数据
  * DbFile有id号、访问页、删除元组、getTupleDesc

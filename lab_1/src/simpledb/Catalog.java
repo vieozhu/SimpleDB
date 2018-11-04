@@ -74,9 +74,9 @@ public class Catalog {
             throw new IllegalArgumentException();
         }
 
-        if (nameToId.containsKey(name)) {
+        /*if (nameToId.containsKey(name)) {  // 添加这个限制，当重名时，会运行不下去
             throw new UnsupportedOperationException("不支持重名");
-        }
+        }*/
 
         Table _table = new Table(file, name, pkey);
         int tableId = file.getId();
