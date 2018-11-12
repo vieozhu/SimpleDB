@@ -2,6 +2,10 @@
 
 ### jdk版本：Java 1.5.0_13
 
+### 类说明文档：tutorial/package-summary.html
+
+### 实验说明文档：tutorial/assign.html
+
 ## lab_1
 `
 
