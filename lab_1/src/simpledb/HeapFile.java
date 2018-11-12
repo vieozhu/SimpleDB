@@ -1,7 +1,5 @@
 package simpledb;
 
-import com.sun.org.apache.xerces.internal.impl.dtd.models.DFAContentModel;
-
 import java.io.*;
 import java.util.*;
 
@@ -15,29 +13,27 @@ import java.util.*;
  * heapfile包含无序的固定大小的page，page中存储元组
  * HeapPage构造函数中描述了HeapPage的格式。
  *
- * @author Sam Madden
  * @see simpledb.HeapPage#HeapPage
+ * @author Sam Madden
  */
-public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实现
+public class HeapFile implements DbFile {
 
-    private File file;
-    private TupleDesc tupleDesc;
-    private int numPages;
+	private TupleDesc tupleDesc;
 
+	private int numOfPage;
+
+	private File file;
     /**
      * Constructs a heap file backed by the specified file.
-     * heap file 对文件 backed by 支持
      *
      * @param f the file that stores the on-disk backing store for this heap file.
-     *          backing store备份存储
      */
     public HeapFile(File f, TupleDesc td) {
         // some code goes here
-        this.file = f;
-        this.tupleDesc = td;
+    	file = f;
         // 页大小：一个file块中可以放下多少PAGE_SIZE大小的page
-        this.numPages = (int) (file.length() / BufferPool.PAGE_SIZE);
-
+    	numOfPage = (int) (file.length() / BufferPool.PAGE_SIZE);
+    	tupleDesc = td;
     }
 
     /**
@@ -47,63 +43,62 @@ public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实�
      */
     public File getFile() {
         // some code goes here
-        return this.file;
+        return file;
     }
 
     /**
-     * Returns an ID uniquely identifying this HeapFile. Implementation note:
-     * you will need to generate this tableid somewhere ensure that each
-     * HeapFile has a "unique id," and that you always return the same value
-     * for a particular HeapFile. We suggest hashing the absolute file name of
-     * the file underlying the heapfile, i.e. f.getAbsoluteFile().hashCode().
-     *
-     * @return an ID uniquely identifying this HeapFile.
-     */
+    * Returns an ID uniquely identifying this HeapFile. Implementation note:
+    * you will need to generate this tableid somewhere ensure that each
+    * HeapFile has a "unique id," and that you always return the same value
+    * for a particular HeapFile. We suggest hashing the absolute file name of
+    * the file underlying the heapfile, i.e. f.getAbsoluteFile().hashCode().
+    *
+    * @return an ID uniquely identifying this HeapFile.
+    */
     public int getId() {
         // some code goes here
+    	return file.getAbsoluteFile().hashCode();
+
         //throw new UnsupportedOperationException("implement this");
-        return this.file.getAbsoluteFile().hashCode();
     }
 
     /**
      * Returns the TupleDesc of the table stored in this DbFile.
-     *
      * @return TupleDesc of this DbFile.
      */
     public TupleDesc getTupleDesc() {
-        // some code goes here
-        // throw new UnsupportedOperationException("implement this");
-        return this.tupleDesc;
+    	// some code goes here
+    	return tupleDesc;
+    	//throw new UnsupportedOperationException("implement this");
     }
 
     // see DbFile.java for javadocs
-    // Read the specified page from disk.
-    public Page readPage(PageId pid) throws IllegalArgumentException {  // 实现DbFile接口的方法
+    /**
+     * read(byte b[], int off, int len)
+     * @param //b     读取数据的缓冲区
+     * @param //off   数组中写入数据的起始偏移量。
+     * @param //len   读取的最大字节数。
+     * @return the total number of bytes read into the buffer
+     * */
+    public Page readPage(PageId pid) {
         // some code goes here
         // 返回一个HeapPage(HeapPageId id, byte[] data)
-        Page page = null;
+    	Page page = null;
         byte[] data = new byte[BufferPool.PAGE_SIZE];
 
-        try {
-            RandomAccessFile raf = new RandomAccessFile(file, "r");  // 用于任意读写文件
+        try
+        {
+            RandomAccessFile raf = new RandomAccessFile(getFile(), "r");
             // page数量乘以缓冲池中page的数量
-            int pos = pid.pageno() * Database.getBufferPool().PAGES_NUM;
+            int pos = pid.pageno() * BufferPool.PAGE_SIZE;
 
-            raf.seek(pos);  // raf.seek(long pos)读取时，将指针重置到文件的开始位置。
-            /**
-             * read(byte b[], int off, int len)
-             * @param b     读取数据的缓冲区
-             * @param off   数组中写入数据的起始偏移量。
-             * @param len   读取的最大字节数。
-             * @return the total number of bytes read into the buffer
-             * */
+            // raf.seek(long pos)读取时，将指针重置到文件的开始位置。
+            raf.seek(pos);
             raf.read(data, 0, data.length);
             page = new HeapPage((HeapPageId) pid, data);
-
-        } catch (IOException e) {  // try里边要有内容
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
         return page;
     }
 
@@ -118,12 +113,12 @@ public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实�
      */
     public int numPages() {
         // some code goes here
-        return this.numPages;
+        return numOfPage;
     }
 
     // see DbFile.java for javadocs
     public ArrayList<Page> addTuple(TransactionId tid, Tuple t)
-            throws DbException, IOException, TransactionAbortedException {
+        throws DbException, IOException, TransactionAbortedException {
         // some code goes here
         return null;
         // not necessary for lab1
@@ -131,118 +126,84 @@ public class HeapFile implements DbFile {  // heapfile是对dbfile接口的实�
 
     // see DbFile.java for javadocs
     public Page deleteTuple(TransactionId tid, Tuple t)
-            throws DbException, TransactionAbortedException {
+        throws DbException, TransactionAbortedException {
         // some code goes here
         return null;
         // not necessary for lab1
     }
 
     // see DbFile.java for javadocs
-    // 迭代器都是继承DbFileIterator接口
     public DbFileIterator iterator(TransactionId tid) {
         // some code goes here
         // HeapFileIterator 继承DbFileIterator
         return new HeapFileIterator(tid);
     }
 
-    /**
-     * Returns an iterator over all the tuples stored in this DbFile
-     */
     private class HeapFileIterator implements DbFileIterator {
-
-        private TransactionId tid;  // 事务处理id
 
         private int pagePos;
 
-        private Iterator<Tuple> tuplesInPage;  // 定义迭代器
+        private Iterator<Tuple> tuplesInPage;
 
+        private TransactionId tid;  // 事务处理id
 
-        public HeapFileIterator(TransactionId tid) {  // 类构造函数
+        public HeapFileIterator(TransactionId tid) {
+            // 构造函数
             this.tid = tid;
         }
 
-        public Iterator<Tuple> getTuplesInPage(HeapPageId pageId) throws TransactionAbortedException, DbException {  // 向方法签名添加异常
+        public Iterator<Tuple> getTuplesInPage(HeapPageId pid) throws TransactionAbortedException, DbException {
             // 通过BufferPool来获得page
-            HeapPage page = (HeapPage) Database.getBufferPool().getPage(tid, pageId, Permissions.READ_ONLY);
-            // 迭代器返回的是页
-            return (Iterator<Tuple>) page.iterator();
-
+            HeapPage page = (HeapPage) Database.getBufferPool().getPage(tid, pid, Permissions.READ_ONLY);
+            return page.iterator();  // 迭代器返回的是页
         }
 
-        /**
-         * Opens the iterator
-         *
-         * @throws DbException when there are problems opening/accessing the database.
-         */
-        // 重写方法
         public void open() throws DbException, TransactionAbortedException {
             // 初始化迭代器
             pagePos = 0;
-            HeapPageId pageId = new HeapPageId(getId(), pagePos);
-            tuplesInPage = getTuplesInPage(pageId);
+            HeapPageId pid = new HeapPageId(getId(), pagePos);
 
+            tuplesInPage = getTuplesInPage(pid);
         }
 
         /**
          * @return true if there are more tuples available.
          */
         public boolean hasNext() throws DbException, TransactionAbortedException {
-            // 迭代器未启动或则关闭
             if (tuplesInPage == null) {
+                // 迭代器未启动或则关闭
                 return false;
             }
 
-            // if there are more tuples available.
             if (tuplesInPage.hasNext()) {
-                return true;  // iterator迭代器的hasNext()方法
-            }else return false;
-
-            /*if (pagePos < numPages() - 1) {
+                // if there are more tuples available.
+                return true;
+            }
+            if (pagePos < numPages() - 1) {
                 pagePos++;
                 HeapPageId pid = new HeapPageId(getId(), pagePos);
                 tuplesInPage = getTuplesInPage(pid);
-                //这时不能直接return ture，有可能返回的新的迭代器是不含有tuple的
+
                 return tuplesInPage.hasNext();
-            } else return false;*/
-
+            } else return false;
         }
 
-        /**
-         * Gets the next tuple from the operator (typically implementing by reading
-         * from a child operator or an access method).
-         *
-         * @return The next tuple in the iterator.
-         * @throws NoSuchElementException if there are no more tuples
-         */
         public Tuple next() throws DbException, TransactionAbortedException, NoSuchElementException {
-            // there are no more tuples
-            if (!hasNext()) throw new NoSuchElementException("no more tuples");
-            else return tuplesInPage.next();  // // iterator迭代器的next()方法
+            if (!hasNext()) {
+                throw new NoSuchElementException("not opened or no tuple remained");
+            }
+            return tuplesInPage.next();
         }
 
-        /**
-         * Resets the iterator to the start.
-         *
-         * @throws DbException When rewind is unsupported.
-         */
         public void rewind() throws DbException, TransactionAbortedException {
-            // 调用open()初始化迭代器
+
             open();
-
-
         }
 
-        /**
-         * Closes the iterator.
-         */
         public void close() {
-            // 参数设为0，则关闭
-            this.pagePos = 0;
-            this.tuplesInPage = null;
-
+            pagePos = 0;
+            tuplesInPage = null;
         }
     }
-
-
 }
 
