@@ -214,6 +214,10 @@ public class TestUtil {
             throw new RuntimeException("not implemented");
         }
 
+        public ArrayList<Page> insertTuple(TransactionId tid, Tuple t) throws DbException, IOException, TransactionAbortedException {
+            return null;
+        }
+
         public ArrayList<Page> addTuple(TransactionId tid, Tuple t)
                 throws DbException, IOException, TransactionAbortedException {
             throw new RuntimeException("not implemented");
