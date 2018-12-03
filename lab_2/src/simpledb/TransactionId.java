@@ -4,7 +4,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * TransactionId is a class that contains the identifier of a transaction.
- * TransactionId是一个包含事务标识符的类
  */
 public class TransactionId {
     static AtomicLong counter = new AtomicLong(0);
@@ -19,7 +18,7 @@ public class TransactionId {
     }
 
     public boolean equals(Object tid) {
-        return ((TransactionId) tid).myid == myid;
+        return ((TransactionId)tid).myid == myid;
     }
 
     public int hashCode() {

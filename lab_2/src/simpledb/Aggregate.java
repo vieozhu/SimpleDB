@@ -8,7 +8,8 @@ import java.util.*;
  * by a single column.
  */
 public class Aggregate extends AbstractDbIterator {
-
+	Aggregator aggor;
+	DbIterator aggori;
     /**
      * Constructor.  
      *
@@ -20,9 +21,42 @@ public class Aggregate extends AbstractDbIterator {
      * @param afield The column over which we are computing an aggregate.
      * @param gfield The column over which we are grouping the result, or -1 if there is no grouping
      * @param aop The aggregation operator to use
+     * @throws TransactionAbortedException 
+     * @throws DbException 
      */
     public Aggregate(DbIterator child, int afield, int gfield, Aggregator.Op aop) {
         // some code goes here
+    	if(child.getTupleDesc().getType(afield)==Type.INT_TYPE) {
+    		if(gfield==Aggregator.NO_GROUPING) {
+    			this.aggor = new IntAggregator(gfield, null, afield, aop);
+    		}else {
+    			this.aggor = new IntAggregator(gfield, child.getTupleDesc().getType(gfield), afield, aop);
+    		}
+    		
+    	}else {
+    		if(gfield==Aggregator.NO_GROUPING) {
+    			this.aggor =new StringAggregator(gfield, null, afield, aop);
+    		}else {
+    			this.aggor =new StringAggregator(gfield, child.getTupleDesc().getType(gfield), afield, aop);
+    		}
+    		
+    	}
+    	try {
+    		child.open();
+			while(child.hasNext()) {
+				this.aggor.merge(child.next());
+			}
+		} catch (NoSuchElementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransactionAbortedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	this.aggori = this.aggor.iterator();
     }
 
     public static String aggName(Aggregator.Op aop) {
@@ -44,6 +78,7 @@ public class Aggregate extends AbstractDbIterator {
     public void open()
         throws NoSuchElementException, DbException, TransactionAbortedException {
         // some code goes here
+    	aggori.open();
     }
 
     /**
@@ -56,11 +91,16 @@ public class Aggregate extends AbstractDbIterator {
      */
     protected Tuple readNext() throws TransactionAbortedException, DbException {
         // some code goes here
-        return null;
+        //return null;
+    	if(!aggori.hasNext()) {
+    		return null;
+    	}
+    	return aggori.next();
     }
 
     public void rewind() throws DbException, TransactionAbortedException {
         // some code goes here
+    	aggori.rewind();
     }
 
     /**
@@ -76,10 +116,12 @@ public class Aggregate extends AbstractDbIterator {
      */
     public TupleDesc getTupleDesc() {
         // some code goes here
-        return null;
+        //return null;
+    	return aggori.getTupleDesc();
     }
 
     public void close() {
         // some code goes here
+    	aggori.close();
     }
 }

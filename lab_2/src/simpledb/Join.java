@@ -1,11 +1,18 @@
 package simpledb;
 import java.util.*;
 
+import javax.jws.soap.SOAPBinding.ParameterStyle;
+
 /**
  * The Join operator implements the relational join operation.
  */
 public class Join extends AbstractDbIterator {
-
+	JoinPredicate p;
+	DbIterator child1;
+	DbIterator child2;
+	Tuple currentt1;
+	boolean flag;
+	
     /**
      * Constructor.  Accepts to children to join and the predicate
      * to join them on
@@ -16,6 +23,11 @@ public class Join extends AbstractDbIterator {
      */
     public Join(JoinPredicate p, DbIterator child1, DbIterator child2) {
         // some code goes here
+    	this.p = p;
+    	this.child1 = child1;
+    	this.child2 = child2;
+    	currentt1=null;
+    	flag = true;
     }
 
     /**
@@ -23,20 +35,27 @@ public class Join extends AbstractDbIterator {
      */
     public TupleDesc getTupleDesc() {
         // some code goes here
-        return null;
+        //return null;
+    	return TupleDesc.combine(child1.getTupleDesc(), child2.getTupleDesc());
     }
 
     public void open()
         throws DbException, NoSuchElementException, TransactionAbortedException {
         // some code goes here
+    	child1.open();
+    	child2.open();
     }
 
     public void close() {
         // some code goes here
+    	child1.close();
+    	child2.close();
     }
 
     public void rewind() throws DbException, TransactionAbortedException {
         // some code goes here
+    	child1.rewind();
+    	child2.rewind();
     }
 
     /**
@@ -60,6 +79,21 @@ public class Join extends AbstractDbIterator {
      */
     protected Tuple readNext() throws TransactionAbortedException, DbException {
         // some code goes here
-        return null;
+        //return null;
+    	while(!flag||child1.hasNext()) {
+    		if(flag) {
+        		currentt1 = child1.next();
+    		}
+    		while(child2.hasNext()) {
+    			Tuple t2 = child2.next();
+    			if(p.filter(currentt1, t2)) {
+    				flag = false;
+    				return Tuple.combine(currentt1, t2);
+    			}
+    		}
+    		flag=true;
+    		child2.rewind();
+    	}
+    	return null;
     }
 }

@@ -1,13 +1,13 @@
 package simpledb;
 
-/**
- * Predicate compares tuples to a specified Field value.
+/** Predicate compares tuples to a specified Field value.
  */
 public class Predicate {
+	int field;
+	Op op;
+	Field operand;
 
-    /**
-     * Constants used for return codes in Field.compare
-     */
+    /** Constants used for return codes in Field.compare */
     public enum Op {
         EQUALS, GREATER_THAN, LESS_THAN, LESS_THAN_OR_EQ, GREATER_THAN_OR_EQ, LIKE;
 
@@ -30,17 +30,36 @@ public class Predicate {
         public static Op getOp(int i) {
             return values()[i];
         }
+        
+        public String toString() {
+            if (this == EQUALS)
+                return "=";
+            if (this == GREATER_THAN)
+                return ">";
+            if (this == LESS_THAN)
+                return "<";
+            if (this == LESS_THAN_OR_EQ)
+                return "<=";
+            if (this == GREATER_THAN_OR_EQ)
+                return ">=";
+            if (this == LIKE)
+                return "like";
+            throw new IllegalStateException("impossible to reach here");
+        }
     }
 
     /**
      * Constructor.
      *
-     * @param field   field number of passed in tuples to compare against.
-     * @param op      operation to use for comparison
+     * @param field field number of passed in tuples to compare against.
+     * @param op operation to use for comparison
      * @param operand field value to compare passed in tuples to
      */
     public Predicate(int field, Op op, Field operand) {
         // some code goes here
+    	this.field = field;
+    	this.op = op;
+    	this.operand = operand;
     }
 
     /**
@@ -54,7 +73,8 @@ public class Predicate {
      */
     public boolean filter(Tuple t) {
         // some code goes here
-        return false;
+        //return false;
+    	return t.getField(this.field).compare(this.op, this.operand);
     }
 
     /**
@@ -63,6 +83,7 @@ public class Predicate {
      */
     public String toString() {
         // some code goes here
-        return "";
+        //return "";
+    	return "f = " + field + " op = " + op.toString() + "operand = " + operand.toString();
     }
 }

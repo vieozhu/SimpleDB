@@ -15,9 +15,8 @@ import simpledb.systemtest.SimpleDbTestBase;
 
 public class CatalogTest extends SimpleDbTestBase {
     private static String name = "test";
-
-    @Before
-    public void addTables() throws Exception {
+    
+    @Before public void addTables() throws Exception {
         Database.getCatalog().clear();
         Database.getCatalog().addTable(new SkeletonFile(-1, Utility.getTupleDesc(2)), "");
         Database.getCatalog().addTable(new SkeletonFile(-2, Utility.getTupleDesc(2)), name);
@@ -26,8 +25,7 @@ public class CatalogTest extends SimpleDbTestBase {
     /**
      * Unit test for Catalog.getTupleDesc()
      */
-    @Test
-    public void getTupleDesc() throws Exception {
+    @Test public void getTupleDesc() throws Exception {
         TupleDesc expected = Utility.getTupleDesc(2);
         TupleDesc actual = Database.getCatalog().getTupleDesc(-1);
 
@@ -37,31 +35,29 @@ public class CatalogTest extends SimpleDbTestBase {
     /**
      * Unit test for Catalog.getTableId()
      */
-    @Test
-    public void getTableId() throws NoSuchFieldException {
+    @Test public void getTableId() {
         assertEquals(-2, Database.getCatalog().getTableId(name));
         assertEquals(-1, Database.getCatalog().getTableId(""));
-
+        
         try {
             Database.getCatalog().getTableId(null);
             Assert.fail("Should not find table with null name");
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+        } catch (NoSuchElementException e) {
+            // Expected to get here
         }
-
+        
         try {
             Database.getCatalog().getTableId("foo");
             Assert.fail("Should not find table with name foo");
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+        } catch (NoSuchElementException e) {
+            // Expected to get here
         }
     }
 
     /**
      * Unit test for Catalog.getDbFile()
      */
-    @Test
-    public void getDbFile() throws Exception {
+    @Test public void getDbFile() throws Exception {
         DbFile f = Database.getCatalog().getDbFile(-1);
 
         // NOTE(ghuo): we try not to dig too deeply into the DbFile API here; we

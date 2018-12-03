@@ -39,12 +39,12 @@ public class AggregateTest extends SimpleDbTestBase {
                     5, 7 });
     this.scan2 = TestUtil.createTupleList(width1,
         new Object[] { 1, "a",
-                    1, "a",
-                    1, "a",
-                    3, "a",
-                    3, "a",
-                    3, "a",
-                    5, "a" });
+                    1, "b",
+                    1, "c",
+                    3, "d",
+                    3, "e",
+                    3, "f",
+                    5, "g" });
     this.scan3 = TestUtil.createTupleList(width1,
         new Object[] { "a", 2,
                     "a", 4,
